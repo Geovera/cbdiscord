@@ -1,0 +1,7 @@
+{
+    "host": "localhost",
+    "user": "root",
+    "password": "goodyear",
+    "database": "conquerors_blade_db",
+    "connectionLimit": 100
+}

@@ -1,0 +1,11 @@
+{
+    "name": "cb-server",
+    "dependencies": {
+        "@koa/router": "^8.0.8",
+        "fs": "0.0.1-security",
+        "koa": "^2.11.0",
+        "koa-body": "^4.1.1",
+        "koa-static": "^5.0.0",
+        "promise-mysql": "^4.1.3"
+    }
+}
