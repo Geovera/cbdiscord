@@ -4,23 +4,22 @@ const units = {};
 
 const unit_columns = ['name', 'type', 'stars', 'hp', 'pap', 'pd', 'sap', 'sd', 'bap', 'bp', 'pdf', 'sdf', 'bdf', 'leadership', 'troop_count', 'hero_level'];
 
-units.getAll = async (context) =>{
+units.getAll = async (context, next) =>{
 
     let sql_text = 'SELECT * FROM units';
     try{
         let data = await db.con.query(sql_text);
-        return {units: data};
+        context.response.body = {units: data};
     }catch(error){
         console.log(error);
         context.throw(400, 'INVALID_DATA');
     }
 }
-units.getUnit = async (context, id) =>{
-
-    let sql_text = `SELECT * FROM units WHERE id=${id}`;
+units.getUnit = async (context, next) =>{
+    let sql_text = `SELECT * FROM units WHERE id=${context.params.id}`;
     try{
         let data = await db.con.query(sql_text);
-        return {unit: data};
+        context.response.body = {unit: data};
     }catch(error){
         console.log(error);
         context.throw(400, 'INVALID_DATA');
@@ -28,12 +27,13 @@ units.getUnit = async (context, id) =>{
 }
 
 
-units.insertUnit = async (context, body) =>{
+units.insertUnit = async (context, next) =>{
+    let body = context.request.body;
     let column_text = 'name, type';
     let value_text = `'${body.name}', '${body.type}'`;
     for (let i = 2; i < unit_columns.length; i++) {
         const element = unit_columns[i];
-        if(body[element]){
+        if(body[element]!==undefined){
             column_text += ', ' + element;
             value_text += ', ' +body[element];
         }
@@ -42,7 +42,7 @@ units.insertUnit = async (context, body) =>{
 
     try{
         let data = await db.con.query(sql_query);
-        return {status: 'success'};
+        context.response.body = {status: 'success'};
     }catch(error){
         console.log(error);
         context.throw(400, 'INVALID_DATA');
@@ -50,10 +50,11 @@ units.insertUnit = async (context, body) =>{
     
 }
 
-units.modifyUnit = async (context, body) => {
+units.modifyUnit = async (context, next) => {
+    let body = context.request.body;
     let set_text = '';
     if(body.name && body.type){
-        set_text += `name = '${body.name}' type = '${body.type}'`;
+        set_text += `name = '${body.name}', type = '${body.type}'`;
     }else if(body.name){
         set_text += `name = '${body.name}'`;
     }else if(body.type){
@@ -61,17 +62,19 @@ units.modifyUnit = async (context, body) => {
     }
     for (let i = 2; i < unit_columns.length; i++) {
         const element = unit_columns[i];
-        if(set_text===''){
-            set_text = `${element} = ${body[element]}`;
-        }else if(body[element]){
-            set_text = `, ${element} = ${body[element]}`;
+        if(body[element]!==undefined){
+            if(set_text===''){
+                set_text += `${element} = ${body[element]}`;
+            }else{
+                set_text += `, ${element} = ${body[element]}`;
+            }
         }
     }
     let sql_query = `UPDATE units SET ${set_text} WHERE id = ${body.id}`;
 
     try{
         let data = await db.con.query(sql_query);
-        return {status: 'success'};
+        context.response.body = {status: 'success'};
     }catch(error){
         console.log(error);
         context.throw(400, 'INVALID_DATA');
