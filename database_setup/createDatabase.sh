@@ -240,7 +240,7 @@ function createMysqlDbUser()
 
     SQL7="CREATE TABLE users(
     		id bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    		discord_id CHAR(30) NOT NULL,
+    		discord_id int,
 		house_id bigint unsigned,
 		leadership smallint unsigned,
 		FOREIGN KEY(house_id) REFERENCES houses(id));"

@@ -4,8 +4,6 @@ const Router = require('@koa/router');
 const router = new Router();
 const usersModel = require('../models/users');
 
-router.get('/user/:id', (context, next)=>{
-    
-})
+router.get('/user/:id', usersModel.getUser);
 
 module.exports = router;
