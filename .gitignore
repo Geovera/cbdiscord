@@ -1,2 +1,6 @@
 server/database/config.json
 server/node_modules/
+discord/.env
+discord/__pycache__
+*.pyc
+__pycache__
