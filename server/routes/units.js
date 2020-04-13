@@ -7,7 +7,9 @@ const router = new Router();
 const unitsModel = require('../models/units');
 router.get('/unit/all', unitsModel.getAll);
 
-router.get('/unit/:id', unitsModel.getUnit);
+router.get('/unit/id/:id', unitsModel.getUnitById);
+
+router.get('/unit/name/:name', unitsModel.getUnitByName);
 
 router.post('/unit/insert', unitsModel.insertUnit);
 

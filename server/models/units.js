@@ -8,7 +8,7 @@ const unit_columns = ['name', 'type', 'stars', 'hp', 'pap', 'pd', 'sap', 'sd', '
 
 units.getAll = async (context, next) =>{
 
-    let sql_text = 'SELECT * FROM units';
+    let sql_text = 'SELECT * FROM units ORDER BY name ASC';
     try{
         let data = await db.con.query(sql_text);
         context.response.body = {units: data};
@@ -17,17 +17,27 @@ units.getAll = async (context, next) =>{
         context.throw(400, 'INVALID_DATA');
     }
 }
-units.getUnit = async (context, next) =>{
+units.getUnitById = async (context, next) =>{
     let sql_text = `SELECT * FROM units WHERE id=${context.params.id}`;
     try{
         let data = await db.con.query(sql_text);
-        context.response.body = {unit: data};
+        context.response.body = data[0];
     }catch(error){
         console.log(error);
         context.throw(400, 'INVALID_DATA');
     }
 }
 
+units.getUnitByName = async (context, next) =>{
+    let sql_text = `SELECT * FROM units WHERE name LIKE '%${context.params.name}%'`;
+    try{
+        let data = await db.con.query(sql_text);
+        context.response.body = data[0];
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'INVALID_DATA');
+    }
+}
 
 units.insertUnit = async (context, next) =>{
     let body = context.request.body;

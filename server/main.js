@@ -8,7 +8,7 @@ const unitsRouter = require('./routes/units');
 const app = new Koa();
 
 app.use(bodyParser());
-app.use(auth());
+//app.use(auth());
 
 app.use(unitsRouter.routes()).use(unitsRouter.allowedMethods());
 
