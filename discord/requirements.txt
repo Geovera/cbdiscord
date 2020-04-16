@@ -2,3 +2,4 @@ discord.py
 python-dotenv
 requests
 pycryptodome
+discord-argparse==1.0.0
