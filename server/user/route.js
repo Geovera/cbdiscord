@@ -38,6 +38,9 @@ router.get('/units', async (context, next) => {
     checkUser(context);
     try{
         const data = await userModel.getUserUnits(context.session.user_id);
+        if(data.length===1  && data[0].id===null){
+            throw Error('No Units Found')
+        }
         context.response.body = {units: data};
         context.status = 200;
     }catch(error){

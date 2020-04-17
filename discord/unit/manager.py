@@ -117,7 +117,7 @@ class UnitManager(commands.Cog):
         """Gets all units"""
 
         data = await Api.get('/unit/all')
-        if data == None:
+        if(data==None or len(data['units'])==0):
             return await ctx.send('No units found')
         
         units_data = []
