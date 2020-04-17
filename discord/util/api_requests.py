@@ -6,6 +6,7 @@ from settings import API_URL_BASE
 
 class ApiError(Exception):
     def __init__(self, error_code:int, message:str=None):
+
         self.error_code = error_code
         self.message = message
 
@@ -38,27 +39,38 @@ class Api:
 
         return Api.status_code_handling(response)
 
+    @staticmethod
+    async def delete(url, cookies=None):
+        req_url = API_URL_BASE + url
+        response = requests.delete(req_url, cookies=cookies)
+
+        return Api.status_code_handling(response)
 
     @staticmethod
-    async def getWithUser(url, uid):
-        enc_id = Crypto.encrypt(str(uid))
-        cookies = {'discord_id': enc_id}
-        print('ENC: ' + enc_id)
-        return await Api.get(url, cookies)
+    async def getSession(url, session):
+        req_url = API_URL_BASE + url
+        response = session.get(req_url)
+
+        return Api.status_code_handling(response)
 
     @staticmethod
-    async def postWithUser(url, data, uid):
-        enc_id = Crypto.encrypt(str(uid))
-        cookies = {'discord_id': enc_id}
-        print('ENC: ' + enc_id)
-        return await Api.post(url, data, cookies)
+    async def postSession(url, data, session):
+        req_url = API_URL_BASE + url
+        response = session.post(req_url, json=data)
+        return Api.status_code_handling(response)
 
     @staticmethod
-    async def putWithUser(url, data, uid):
-        enc_id = Crypto.encrypt(str(uid))
-        cookies = {'discord_id': enc_id}
-        print('ENC: ' + enc_id)
-        return await Api.put(url, data, cookies)
+    async def putSession(url, data, session):
+        req_url = API_URL_BASE + url
+        response = session.put(req_url, json=data)
+        return Api.status_code_handling(response)
+
+    @staticmethod
+    async def deleteSession(url, session):
+        req_url = API_URL_BASE + url
+        response = session.delete(req_url)
+
+        return Api.status_code_handling(response)
 
 
     @staticmethod
@@ -79,7 +91,6 @@ class Api:
         elif response.status_code >= 400:
             error_str = '[!] [{0}] Bad Request'.format(response.status_code);
             print(error_str)
-            print(content)
             raise ApiError(response.status_code, content)
         elif response.status_code >= 300:
             error_str = '[!] [{0}] Unexpected redirect.'.format(response.status_code)

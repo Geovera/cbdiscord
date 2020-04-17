@@ -7,6 +7,7 @@ from unit.model import Unit
 from util.api_requests import Api, ApiError
 from .unit_parameters import *
 from discord_argparse import ArgumentConverter
+from util.embed_style import EmbedStyle
 
 class UnitManager(commands.Cog):
 
@@ -111,8 +112,6 @@ class UnitManager(commands.Cog):
         except ApiError as error:
             return await self.handleApiError(ctx, error)
 
-        if data==None:
-            return await ctx.send('No unit found for: ' + unit)
         unit_data = Unit(**data)
         
         embed = discord.Embed();
@@ -159,63 +158,7 @@ class UnitManager(commands.Cog):
         await self.createUnitTable(ctx, units_data)
 
     async def createUnitTable(self, ctx, data):
-        max_rows = 5
-        max_pages = len(data) // max_rows
-        rem = len(data) % max_rows
-        cur_page = 0;
-        first_run = True
-        if rem!=0:
-            max_pages+=1
-
-        
-        while True:
-            if first_run:
-                embed = self.createUnitPage(data, max_rows*cur_page, max_rows*cur_page + max_rows)
-
-                first_run = False
-                msg = await ctx.send(embed=embed)
-
-            reactmoji = []
-            if max_pages == 1 and cur_page == 0:
-                pass
-            elif cur_page == 0:
-                reactmoji.append('⏩')
-            elif cur_page == max_pages-1:
-                reactmoji.append('⏪')
-            elif cur_page > 0 and cur_page < max_pages-1:
-                reactmoji.extend(['⏪', '⏩'])
-
-            for react in reactmoji:
-                await msg.add_reaction(react)
-
-            def check_react(reaction, user):
-                if reaction.message.id != msg.id:
-                    return False
-                if user != ctx.message.author:
-                    return False
-                if str(reaction.emoji) not in reactmoji:
-                    return False
-                return True
-
-            try:
-                res, user = await self.bot.wait_for('reaction_add', timeout=30.0, check=check_react)
-            except asyncio.TimeoutError:
-                return await msg.clear_reactions()
-
-            if '⏪' in str(res.emoji):
-                cur_page-= 1
-
-                embed = self.createUnitPage(data, max_rows*cur_page, max_rows*cur_page + max_rows)
-
-                await msg.clear_reactions()
-                await msg.edit(embed=embed)
-            if '⏩' in str(res.emoji):
-                cur_page+= 1
-
-                embed = self.createUnitPage(data, max_rows*cur_page, max_rows*cur_page + max_rows)
-
-                await msg.clear_reactions()
-                await msg.edit(embed=embed)
+        return await EmbedStyle.createPages(self.bot, ctx, data, 5, self.createUnitPage)
 
     def createUnitPage(self, data, minI, maxI):
         embed = discord.Embed(color=0x19212d)

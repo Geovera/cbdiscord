@@ -1,6 +1,7 @@
 'use strict';
 
 const db = require('../database/database');
+const crypto = require('./crypto');
 
 async function discordAuth(context, id){
     let sql_text = `SELECT TOP 1 * FROM users WHERE discordId='${id}'`;
@@ -22,9 +23,11 @@ module.exports = function(opts){
         const discordId = context.cookies.get('discordId');
         const sessionId = context.cookies.get('sessionId');
         if(discordId!==undefined){
+            dec_id = crypto.decode(discordId);
             discordAuth(context, discordId);
         }else if(sessionId!==undefined){
-            sessionAuth(context, context.cookies.get('sessionId'));
+            dec_id = crypto.decode(dec_id);
+            sessionAuth(context, dec_id);
         }else{
             context.throw(400, 'NO ID FOUND');
         }
