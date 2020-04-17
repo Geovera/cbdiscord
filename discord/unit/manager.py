@@ -21,44 +21,11 @@ class UnitManager(commands.Cog):
         else:
             return await ctx.send('Unexpected error. Please try again')
 
-    #@commands.HelpCommand()
-    async def send_cog_help(self, cog):
-        print('Hello')
-        self.add_command_formatting(command)
-        for name, param in command.clean_params.items():
-            if isinstance(param.annotation, ArgumentConverter):
-                arguments = param.annotation.arguments
-                if not arguments:
-                    continue
-                self.paginator.add_line("Arguments:")
-                max_size = max(len(name) for name in arguments)
-
-                for name, argument in arguments.items():
-                    entry = "{0}{1:<{width}} {2}".format(self.indent * " ", name, argument.doc, width=max_size)
-                    self.paginator.add_line(self.shorten_text(entry))
-        self.paginator.close_page()
-        await self.send_pages()
-
-    async def send_bot_help(self, command):
-        print('There')
-        self.add_command_formatting(command)
-        for name, param in command.clean_params.items():
-            if isinstance(param.annotation, ArgumentConverter):
-                arguments = param.annotation.arguments
-                if not arguments:
-                    continue
-                self.paginator.add_line("Arguments:")
-                max_size = max(len(name) for name in arguments)
-
-                for name, argument in arguments.items():
-                    entry = "{0}{1:<{width}} {2}".format(self.indent * " ", name, argument.doc, width=max_size)
-                    self.paginator.add_line(self.shorten_text(entry))
-        self.paginator.close_page()
-        await self.send_pages()
-
     @commands.command()
     async def modifyUnit(self, ctx, unit:str, *, params:modify_param_converter=modify_param_converter.defaults()):
-        """Modify units by name or id. Specify parameters to be modified"""
+        """Modify units by name or id. Specify parameters to be modified.
+            Example: modifyUnit 13 name=\"New Name\" type=\"New Type\"
+            Help for more info"""
 
         if not params:
             return await ctx.send('Some parameters have to be provided')
@@ -91,7 +58,9 @@ class UnitManager(commands.Cog):
 
     @commands.command()
     async def insertUnit(self, ctx, name:str, *, params:insert_param_converter=insert_param_converter.defaults()):
-        """Insert unit by name. Additional parameters can be added"""
+        """Insert unit by name. Additional parameters can be added
+            Example: insertUnit "New Name" type=\"New Type\"
+            Help for more info"""
 
         unit_data = params;
         unit_data['name'] = name;
@@ -103,7 +72,7 @@ class UnitManager(commands.Cog):
             return await self.handleApiError(ctx, error)
 
     @commands.command()
-    async def unitinfo(self, ctx, *, unit:str):
+    async def unitInfo(self, ctx, *, unit:str):
         """Get info from unit"""
 
         data = None
@@ -144,7 +113,7 @@ class UnitManager(commands.Cog):
 
 
     @commands.command()
-    async def allunits(self, ctx):
+    async def allUnits(self, ctx):
         """Gets all units"""
 
         data = await Api.get('/unit/all')

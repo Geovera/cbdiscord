@@ -7,14 +7,28 @@ from discord.ext import commands
 from unit.manager import UnitManager
 from user.manager import UserManager
 from util.command_error_handler import CommandErrorHandler
+from util.help import EditedMinimalHelpCommand, PaginatedHelpCommand
 from util.api_requests import Api
 from settings import DISCORD_TOKEN
 
 
 class ConqBot(commands.Bot):
     def __init__(self, command_prefix='>'):
-        super().__init__(command_prefix)
+        super().__init__(
+            command_prefix=command_prefix,
+            help_command=EditedMinimalHelpCommand())
         self.id_to_session = {}
+
+        self.static_help_command = self.help_command
+        command_impl = self.help_command._command_impl
+        self.help_command = PaginatedHelpCommand()
+        self.static_help_command._command_impl = command_impl
+
+        # self.remove_command('help')
+        # self.add_command(commands.Command(self._help, name='help'))
+
+    async def _help(self, ctx, *, command=None):
+        await ctx.send_help(command)
 
     async def getUserSession(self, user:discord.User):
         if user.id in self.id_to_session:

@@ -21,6 +21,7 @@ class UserManager(commands.Cog):
 
     @commands.command()
     async def registerUser(self, ctx):
+        """Register user. Only done once per user. Can't access user related content otherwise"""
         req_body = {'discordId': ctx.message.author.id}
         try:
             await Api.post('/user/discord-register', req_body)
@@ -30,6 +31,7 @@ class UserManager(commands.Cog):
 
     @commands.command()
     async def removeAssign(self, ctx, term:str):
+        """Unassign unit from yourself"""
         data = None
         try:
             session = await self.bot.getUserSession(ctx.message.author)
@@ -55,6 +57,9 @@ class UserManager(commands.Cog):
 
     @commands.command()
     async def modUnit(self, ctx, term:str, *, params:param_converter=param_converter.defaults()):
+        """Modify unit assigned.
+            Example: modUnit \"Yelmo\" unit_level=20
+            Help for more info"""
         data = None
         try:
             session = await self.bot.getUserSession(ctx.message.author)
@@ -81,6 +86,9 @@ class UserManager(commands.Cog):
 
     @commands.command()
     async def assignUnit(self, ctx, term:str, *, params:param_converter=param_converter.defaults()):
+        """Assign unit to yourself.
+            Example: assignUnit \"Yelmo\" unit_level=1
+            Help for more info"""
         data = None
         try:
             data = await Api.get('/unit/{0}'.format(term))
@@ -108,6 +116,7 @@ class UserManager(commands.Cog):
 
     @commands.command()
     async def myUnits(self, ctx):
+        """Get units assigned to user"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
             data = await Api.getSession('/user/units', session)
