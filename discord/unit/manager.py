@@ -45,7 +45,7 @@ class UnitManager(commands.Cog):
         except asyncio.TimeoutError:
             return await ctx.send('Operation aborted')
         
-        if msg.content.lower() != 'yes':
+        if not(msg.content.lower() == 'yes' or msg.content.lower() == 'y'):
             return await ctx.send('Operation aborted')
         try:
             await Api.put('/unit/{0}'.format(data['id']), params)
@@ -91,13 +91,13 @@ class UnitManager(commands.Cog):
 
         embed.add_field(name='ID', value=unit_data.id, inline=True)
         embed.add_field(name='Name', value=unit_data.name)
-        embed.add_field(name='Type', value=unit_data.type, inline=True)
+        embed.add_field(name='Type', value=unit_data.unit_type, inline=True)
+        embed.add_field(name='HP', value=unit_data.hp)
         embed.add_field(name='Stars', value=(unit_data.stars/2))
         embed.add_field(name='Speed', value=unit_data.speed, inline=True)
-        embed.add_field(name='Range', value=unit_data.range)
-        embed.add_field(name='Ammo', value=unit)
-        embed.add_field(name='Leadership Cost', value=unit_data.leadership)
-        embed.add_field(name='Troop Count', value=unit_data.troop_count, inline=True)
+        embed.add_field(name='Range', value=unit_data.unit_range)
+        embed.add_field(name='Ammo', value=unit_data.ammo)
+        embed.add_field(name='Troop Count', value=unit_data.tc, inline=True)
         embed.add_field(name='Piercing AP', value=unit_data.pap, inline=True)
         embed.add_field(name='Piercing Dg', value=unit_data.pd, inline=True)
         embed.add_field(name='Piercing Df', value=unit_data.pdf, inline=True)
@@ -108,6 +108,8 @@ class UnitManager(commands.Cog):
         embed.add_field(name='Blunt Dg', value=unit_data.bd, inline=True)
         embed.add_field(name='Blunt Df', value=unit_data.bdf, inline=True)
         embed.add_field(name='Labour', value=unit_data.labour, inline=True)
+        embed.add_field(name='Hero Level', value=unit_data.hl, inline=True)
+        embed.add_field(name='Leadership Cost', value=unit_data.ld)
 
         await ctx.send(embed=embed)
 
@@ -127,7 +129,7 @@ class UnitManager(commands.Cog):
         await self.createUnitTable(ctx, units_data)
 
     async def createUnitTable(self, ctx, data):
-        return await EmbedStyle.createPages(self.bot, ctx, data, 5, self.createUnitPage)
+        return await EmbedStyle.createPages(self.bot, ctx, data, 10, self.createUnitPage)
 
     def createUnitPage(self, data, minI, maxI):
         embed = discord.Embed(color=0x19212d)

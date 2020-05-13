@@ -9,12 +9,12 @@ const userModel = {};
 const uu_columns = ['unit_level', 'elite_flg'];
 
 userModel.getUserFromId = async (id) => {
-    const sql_text = 'SELECT TOP 1 id, discord_id, house_id, leadership FROM users WHERE id = ?;';
+    const sql_text = 'SELECT id, discord_id, house_id, leadership FROM users WHERE id = ? LIMIT 1;';
     const data = await db.con.query(sql_text,[id]);
     return data[0];
 }
 userModel.getUserFromDiscord = async (discordId) =>{
-    const sql_text = 'SELECT id, discord_id, house_id, leadership FROM users WHERE discord_id = ?;';
+    const sql_text = 'SELECT id, discord_id, house_id, leadership FROM users WHERE discord_id = ? LIMIT 1;';
     const data = await db.con.query(sql_text, [discordId]);
     return data[0];
 }

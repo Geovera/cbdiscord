@@ -5,7 +5,7 @@ param_converter = ArgumentConverter(
         str,
         doc='Level of Unit',
     ),
-    eltie_flg = OptionalArgument(
+    elite_flg = OptionalArgument(
         bool,
         doc='Is Unit Elite',
     )

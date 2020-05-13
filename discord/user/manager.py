@@ -48,6 +48,8 @@ class UserManager(commands.Cog):
             msg = await self.bot.wait_for('message', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             return await ctx.send('Operation aborted')
+        if not(msg.content.lower() == 'yes' or msg.content.lower() == 'y'):
+            return await ctx.send('Operation aborted')
         try:
             session = await self.bot.getUserSession(ctx.message.author)
             await Api.deleteSession('/user/unit/{0}'.format(data['id']), session)
@@ -75,6 +77,8 @@ class UserManager(commands.Cog):
         try:
             msg = await self.bot.wait_for('message', timeout=30.0, check=check)
         except asyncio.TimeoutError:
+            return await ctx.send('Operation aborted')
+        if not(msg.content.lower() == 'yes' or msg.content.lower() == 'y'):
             return await ctx.send('Operation aborted')
         try:
             session = await self.bot.getUserSession(ctx.message.author)
@@ -104,11 +108,12 @@ class UserManager(commands.Cog):
             msg = await self.bot.wait_for('message', timeout=30.0, check=check)
         except asyncio.TimeoutError:
             return await ctx.send('Operation aborted')
+        if not(msg.content.lower() == 'yes' or msg.content.lower() == 'y'):
+            return await ctx.send('Operation aborted')
         try:
             session = await self.bot.getUserSession(ctx.message.author)
             body = params
             body['unit_id'] = data['id']
-            print(body)
             await Api.postSession('/user/unit', body, session)
             return await ctx.send('Unit Assigned Successfully')
         except ApiError as error:
@@ -135,7 +140,7 @@ class UserManager(commands.Cog):
         for i in range(minI, maxI):
             if i < len(data):
                 unit = data[i]
-                units_str+= '[{0}] {1}\t| {2}\t| {3}\t| {4}\n'.format(unit.id, unit.name, unit.type, unit.stars, unit.unit_level)
+                units_str+= '[{0}] {1}\t| {2}\t| {3}\t| {4}\n'.format(unit.id, unit.name, unit.unit_type, unit.stars, unit.unit_level)
 
         embed.add_field(name='id\t| name\t| type\t| stars\t| level', value=units_str)
 

@@ -1,7 +1,7 @@
 from discord_argparse import *
 
 insert_param_converter = ArgumentConverter(
-    type = OptionalArgument(
+    unit_type = OptionalArgument(
         str,
         doc='Type of Unit',
     ),
@@ -62,10 +62,10 @@ insert_param_converter = ArgumentConverter(
         doc='Hero level required',
     ),
     speed = OptionalArgument(
-        int,
+        float,
         doc='Speed of unit',
     ),
-    range = OptionalArgument(
+    unit_range = OptionalArgument(
         int,
         doc='Range of unit',
     ),
@@ -74,7 +74,7 @@ insert_param_converter = ArgumentConverter(
         doc='Ammo if unit',
     ),
     labour = OptionalArgument(
-        int,
+        float,
         doc='Resourse collection labour',
     ),
     img = OptionalArgument(
@@ -92,7 +92,7 @@ modify_param_converter = ArgumentConverter(
         str,
         doc='New name',
     ),
-    type = OptionalArgument(
+    unit_type = OptionalArgument(
         str,
         doc='Type of Unit',
     ),
@@ -153,10 +153,10 @@ modify_param_converter = ArgumentConverter(
         doc='Hero level required',
     ),
     speed = OptionalArgument(
-        int,
+        float,
         doc='Speed of unit',
     ),
-    range = OptionalArgument(
+    unit_range = OptionalArgument(
         int,
         doc='Range of unit',
     ),
@@ -165,7 +165,7 @@ modify_param_converter = ArgumentConverter(
         doc='Ammo if unit',
     ),
     labour = OptionalArgument(
-        int,
+        float,
         doc='Resourse collection labour',
     ),
     img = OptionalArgument(

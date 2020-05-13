@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Font Awesome 5 Brands';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("/fontawesome/fa-brands-400.woff2") format("woff2"); 
+  }
+  
+  @font-face {
+    font-family: 'Font Awesome 5 Free';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url("/fontawesome/fa-regular-400.woff2") format("woff2");
+  }
+  
+  @font-face {
+    font-family: 'Font Awesome 5 Free';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("/fontawesome/fa-solid-900.woff2") format("woff2");
+  }
+  
+  @mixin icon($icon_code, $style){
+  
+    &::before {
+      font-family: 'Font Awesome 5 Free';
+      content: $icon_code;
+      display: inline-block;
+      @if $style == "solid" {
+        font-weight: 900;
+      } @else if $style == "regular" {
+        font-weight: 400;
+      }
+  
+      @content;
+    }
+  }
+  
+  @keyframes fa-spin {
+      0% { transform: rotate(  0deg); }
+    100% { transform: rotate(360deg); } 
+  }
+  
+  @mixin spin_icon{
+    animation: fa-spin 2s linear infinite;
+  }  

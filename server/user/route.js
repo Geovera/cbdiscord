@@ -4,13 +4,8 @@ const Koa = require('koa');
 const Router = require('@koa/router');
 
 const router = new Router();
+const authRouter = new Router();
 const userModel = require('./model');
-
-function checkUser(context){
-    if(!context.session.user_id){
-        context.throw(401, 'No User Logged')
-    }
-}
 
 router.post('/d-login', async (context, next) =>{
     if(context.session.user_id && userModel.getUserFromId(context.session.user_id)){
@@ -34,76 +29,6 @@ router.post('/d-login', async (context, next) =>{
     }
 });
 
-router.get('/units', async (context, next) => {
-    checkUser(context);
-    try{
-        const data = await userModel.getUserUnits(context.session.user_id);
-        if(data.length===1  && data[0].id===null){
-            throw Error('No Units Found')
-        }
-        context.response.body = {units: data};
-        context.status = 200;
-    }catch(error){
-        console.log(error)
-        context.throw(400, 'No Units Found');
-    }
-});
-
-router.get('/unit/:term', async (context, next) =>{
-    checkUser(context);
-    try{
-        const data = await userModel.getUserUnit(context.session.user_id, context.params.term)
-        context.response.body = data;
-        context.status = 200;
-    }catch(error){
-        console.log(error)
-        context.throw(422, 'No Unit Found')
-    }
-})
-
-router.post('/unit', async (context, next) => {
-    checkUser(context);
-    try{
-        const body = context.request.body;
-        if(!body.unit_id){
-            throw Error('No Unit Id To assign')
-        }
-        await userModel.assignUserUnit(context.session.user_id, body.unit_id, body.unit_level);
-        context.status = 204;
-    }catch(error){
-        console.log(error);
-        if(error.errno===1062){
-            context.throw(422, 'Unit is already assigned')
-        }
-        context.throw(400, 'Could Not Assign Unit')
-    }
-})
-
-router.put('/unit/:unit_id', async (context, next) =>{
-    checkUser(context);
-    try{
-        const body = context.request.body;
-        if(!body){
-            throw Error('No Data to Modify')
-        }
-        await userModel.modifyUserUnit(context.session.user_id, context.params.unit_id, body);
-        context.status = 204;
-    }catch(error){
-        console.log(error);
-        context.throw(400, 'Could Not Modify Unit')
-    }
-})
-
-router.delete('/unit/:unit_id', async (context, next) =>{
-    checkUser(context);
-    try{
-        await userModel.deleteUserUnit(context.session.user_id, context.params.unit_id);
-        context.status = 204;
-    }catch(error){
-        console.log(error);
-        context.throw(400, 'Could Not Unassign Unit')
-    }
-})
 
 router.post('/discord-register', async(context, next) =>{
     const body = context.request.body;
@@ -123,7 +48,7 @@ router.post('/discord-register', async(context, next) =>{
 
     let user = undefined;
     try{
-        data = await userModel.getUserFromDiscord(discord_id);
+        user = await userModel.getUserFromDiscord(discord_id);
     }catch(error){
         console.log(error);
         context.throw(422, 'Invalid Discord Id')
@@ -140,4 +65,71 @@ router.post('/discord-register', async(context, next) =>{
     }
 });
 
-module.exports = router;
+authRouter.get('/units', async (context, next) => {
+    try{
+        const data = await userModel.getUserUnits(context.session.user_id);
+        if(data.length===1  && data[0].id===null){
+            throw Error('No Units Found')
+        }
+        context.response.body = {units: data};
+        context.status = 200;
+    }catch(error){
+        console.log(error)
+        context.throw(400, 'No Units Found');
+    }
+});
+
+authRouter.get('/unit/:term', async (context, next) =>{
+    try{
+        const data = await userModel.getUserUnit(context.session.user_id, context.params.term)
+        context.response.body = data;
+        context.status = 200;
+    }catch(error){
+        console.log(error)
+        context.throw(422, 'No Unit Found')
+    }
+})
+
+authRouter.post('/unit', async (context, next) => {
+    try{
+        const body = context.request.body;
+        if(!body.unit_id){
+            throw Error('No Unit Id To assign')
+        }
+        await userModel.assignUserUnit(context.session.user_id, body.unit_id, body.unit_level);
+        context.status = 204;
+    }catch(error){
+        console.log(error);
+        if(error.errno===1062){
+            context.throw(422, 'Unit is already assigned')
+        }
+        context.throw(400, 'Could Not Assign Unit')
+    }
+})
+
+authRouter.put('/unit/:unit_id', async (context, next) =>{
+    try{
+        const body = context.request.body;
+        if(!body){
+            throw Error('No Data to Modify')
+        }
+        await userModel.modifyUserUnit(context.session.user_id, context.params.unit_id, body);
+        context.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Could Not Modify Unit')
+    }
+})
+
+authRouter.delete('/unit/:unit_id', async (context, next) =>{
+    try{
+        await userModel.deleteUserUnit(context.session.user_id, context.params.unit_id);
+        context.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Could Not Unassign Unit')
+    }
+})
+
+
+module.exports = [router, authRouter];

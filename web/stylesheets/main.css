@@ -1,0 +1,171 @@
+@font-face {
+  font-family: "Font Awesome 5 Brands";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fontawesome/fa-brands-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fontawesome/fa-regular-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url("/fontawesome/fa-solid-900.woff2") format("woff2");
+}
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+nav-bar {
+  grid-area: navbar;
+  display: grid;
+  color: #dbdbdb;
+  grid-template: "title options user"/1fr 5fr 1fr;
+  background-color: #751010;
+}
+
+bar-title {
+  margin: auto;
+}
+bar-title a {
+  grid-area: title;
+  font-size: 300%;
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+bar-options {
+  grid-area: options;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 30px;
+  min-width: 160px;
+  height: 100%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2c2c2c;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.dropdown-content a:hover {
+  background-color: #3b0f0f;
+}
+
+.dropdown:hover {
+  background-color: #9c4949;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+bar-user {
+  font-size: 30px;
+  text-align: center;
+  padding-top: 30px;
+}
+bar-user a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+bar-user:hover {
+  background-color: #5f1a1a;
+}
+
+content-body {
+  grid-area: content;
+}
+
+center-div {
+  text-align: center;
+  left: 50%;
+  position: absolute;
+  display: inline-block;
+  margin-top: 50px;
+  margin-left: -250px;
+  background-color: #1b1a1a;
+  height: 500px;
+  width: 500px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.tab {
+  overflow: hidden;
+  background-color: #383838;
+}
+.tab button {
+  font-family: monospace;
+  font-size: 20px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.tabcontent {
+  animation: fadeEffect 1s;
+  /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+body {
+  font-family: monospace;
+  background-color: #313131;
+  color: whitesmoke;
+  display: grid;
+  grid-template: "navbar" 100px "content" 1fr "footer" 200px;
+}
+
+/*# sourceMappingURL=main.css.map */

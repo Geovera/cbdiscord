@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf8"/>
+        <link rel="stylesheet" href="./stylesheets/main.css"/>
+        <script src="sugar.js"></script>
+        <script>Sugar.extend()</script>
+        <script src="/main.js" type="module"></script>
+
+    </head>
+    <body>
+        <nav-placeholder></nav-placeholder>
+        <script src="/navbar/navbar.js"></script>
+        <content-body>
+            <center-div>
+                <div class="tab">
+                    <button class="tablinks active" onclick="changeTab(event, 'Login')">Login</button>
+                    <button class="tablinks" onclick="changeTab(event, 'Register')">Register</button>
+                </div>
+                <!-- Tab content -->
+                <div id="Login" class="tabcontent" style="display: block;">
+                    <login-form>
+                        <input type="text" name="login" placeholder="Login"/>
+                        <input type="password" name="password" placeholder="********"/>
+                        <button id="login_button">Log In</button>
+                    </login-form>
+                </div>
+                
+                <div id="Register" class="tabcontent">
+                    <h3>Paris</h3>
+                    <p>Paris is the capital of France.</p>
+                </div>
+            </center-div>
+        </content-body>
+        <script>
+            function changeTab(evt, cityName) {
+                // Declare all variables
+                var i, tabcontent, tablinks;
+
+                // Get all elements with class="tabcontent" and hide them
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                // Get all elements with class="tablinks" and remove the class "active"
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                // Show the current tab, and add an "active" class to the button that opened the tab
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+        </script>
+    </body>
+</html>

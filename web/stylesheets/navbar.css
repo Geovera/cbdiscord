@@ -1,0 +1,66 @@
+nav-bar {
+  grid-area: navbar;
+  display: grid;
+  color: #dbdbdb;
+  grid-template: "title options user"/1fr 5fr 1fr;
+  background-color: #751010;
+}
+
+bar-title {
+  margin: auto;
+}
+bar-title a {
+  grid-area: title;
+  font-size: 300%;
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+bar-options {
+  grid-area: options;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 30px;
+  min-width: 160px;
+  height: 100%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2c2c2c;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+.dropdown-content a:hover {
+  background-color: #3b0f0f;
+}
+
+.dropdown:hover {
+  background-color: #9c4949;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+bar-user {
+  font-size: 30px;
+  text-align: center;
+  padding-top: 30px;
+}
+bar-user a {
+  text-decoration: none;
+  color: whitesmoke;
+}
+
+bar-user:hover {
+  background-color: #5f1a1a;
+}
+
+/*# sourceMappingURL=navbar.css.map */

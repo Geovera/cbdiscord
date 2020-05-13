@@ -4,7 +4,7 @@ const db = require('../database/database');
 
 const unitModel = {};
 
-const unit_columns = ['name', 'type', 'stars', 'hp', 'pap', 'pd', 'sap', 'sd', 'bap', 'bp', 'pdf', 'sdf', 'bdf', 'leadership', 'troop_count', 'hero_level', 'speed', 'range', 'ammo', 'labour', 'img', 'vet_img'];
+const unit_columns = ['name', 'unit_type', 'stars', 'hp', 'pap', 'pd', 'sap', 'sd', 'bap', 'bp', 'pdf', 'sdf', 'bdf', 'ld', 'tc', 'hl', 'speed', 'unit_range', 'ammo', 'labour', 'img', 'vet_img'];
 
 unitModel.getAll = async () =>{
     const sql_text = 'SELECT * FROM units ORDER BY name ASC;';

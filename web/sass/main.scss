@@ -1,0 +1,14 @@
+@import "../fontawesome/font_awesome.scss";
+@import "./navbar.scss";
+@import "./login.scss";
+
+body{
+    font-family: monospace;
+    background-color: rgb(49, 49, 49);
+    color: whitesmoke;
+    display: grid;
+    grid-template:
+        "navbar" 100px
+        "content" 1fr
+        "footer" 200px
+}
