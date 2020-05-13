@@ -26,9 +26,6 @@ class Sync{
         if(!register_response.ok){
             throw new Error(`Register failed with ${login_response.status}`)
         }
-        const user_data = await register_response.json();
-
-        return user_data;
     }
 }
 

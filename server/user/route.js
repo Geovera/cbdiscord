@@ -29,6 +29,44 @@ router.post('/d-login', async (context, next) =>{
     }
 });
 
+router.post('/login', async (context, next) =>{
+    if(context.session.user_id && userModel.getUserFromId(context.session.user_id)){
+        context.throw(400, 'User is Already Logged In')
+    }
+    const body = context.request.body;
+    if(!body || !body.username || !body.password){
+        context.throw(422, 'Missing parameters');
+    }
+
+    try{
+        const user = await userModel.loginUser(body.username, body.password);
+        if(!user){
+            throw Error('No user found')
+        }
+        console.log(user);
+        context.session.user_id = user.id;
+        context.response.body = {username: user.username};
+        context.status = 200;
+    }catch(error){
+        console.log(error);
+        context.throw(422, 'Login Failed')
+    }
+});
+
+router.post('/register', async(context, next)=>{
+    const body = context.request.body;
+    if(!body || !body.username || !body.password){
+        context.throw(422, 'Missing parameters');
+    }
+    try{
+        await userModel.registerUser(body.username, body.password);
+        context.response.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Failed to register user')
+    }
+})
+
 
 router.post('/discord-register', async(context, next) =>{
     const body = context.request.body;

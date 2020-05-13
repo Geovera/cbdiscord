@@ -1,15 +1,17 @@
 'use strict'
-
+const bcrypt = require('bcrypt');
+const ENV = require('../settings');
 const crypto = {};
 
 //    """Someday, I will implement encryption and decryption. Today is not that day"""
-crypto.encode = (data) =>{
-    const buff = new Buffer(data);
-    return buff.toString('base64');
-}
-crypto.decode = (enc_data) =>{
-    const buff = new Buffer(enc_data, 'base64');
-    return buff.toString('utf-8');
+crypto.hash = async (data) =>{
+    const hash = await new Promise((resolve, reject) => {
+        bcrypt.hash(data, ENV.PASSWORD_SALT, function(err, hash) {
+          if (err) reject(err)
+          resolve(hash)
+        });
+    })
+    return hash;
 }
 
 module.exports = crypto;

@@ -129,4 +129,21 @@ userModel.createUserWithDiscord = async (discord_id) =>{
     await db.con.query(sql_text, [discord_id]);
 }
 
+userModel.registerUser = async (username, password) =>{
+    const hashPassword = await crypto.hash(password);
+    console.log(username, hashPassword)
+
+    const sql_text = 'INSERT INTO users (username, password) VALUES (?, ?)';
+    await db.con.query(sql_text, [username, hashPassword])
+}
+
+userModel.loginUser = async (username, password) =>{
+    const hashPassword = await crypto.hash(password);
+    console.log(username, hashPassword)
+    const sql_text = 'SELECT id, username from users WHERE username = ? AND password = ?';
+    const data = await db.con.query(sql_text, [username, hashPassword]);
+
+    return data[0];
+}
+
 module.exports = userModel;

@@ -7,11 +7,23 @@ function loadPage(href)
 }
 const nav_placeholder = document.querySelector('nav-placeholder')
 nav_placeholder.innerHTML = loadPage('/navbar/navbar.html')
-const bar_user = document.querySelector('bar-user a');
 const saved_user = localStorage.getItem('username');
 if(saved_user){
-    bar_user.innerText = saved_user;
+    const bar_user_default = document.querySelector('bar-user a');
+    const bar_user_dropdown = document.querySelector('bar-user .dropdown')
+    const bar_user_name = bar_user_dropdown.querySelector('p');
+    bar_user_default.style.display = "none";
+    bar_user_dropdown.style.display = "";
+    bar_user_name.innerText = saved_user;
 }
-function testy(){
-    console.log('asd')
+
+function logOut(){
+    console.log(document.cookie);
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++){   
+        var spcook =  cookies[i].split("=");
+        document.cookie = spcook[0] + "=;expires=Thu, 21 Sep 1979 00:00:01 UTC;";                                
+    }
+    localStorage.removeItem('username');
+    location.reload();
 }

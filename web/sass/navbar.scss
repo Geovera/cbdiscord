@@ -67,3 +67,13 @@ bar-user{
 bar-user:hover{
     background-color: rgb(95, 26, 26);
 }
+
+bar-user{
+
+    .dropdown{
+        margin-top: -30px;
+    }
+    .dropdown:hover{
+        background-color: rgb(95, 26, 26);;
+    }
+}

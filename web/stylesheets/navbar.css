@@ -63,4 +63,11 @@ bar-user:hover {
   background-color: #5f1a1a;
 }
 
+bar-user .dropdown {
+  margin-top: -30px;
+}
+bar-user .dropdown:hover {
+  background-color: #5f1a1a;
+}
+
 /*# sourceMappingURL=navbar.css.map */
