@@ -3,13 +3,12 @@ class LoginView extends EventTarget {
       super()
       this.element = element
   
-      this.login_field    = this.element.querySelector("[name=login]")
+      this.username_field    = this.element.querySelector("[name=username]")
       this.password_field = this.element.querySelector("[name=password]")
       this.login_button   = this.element.querySelector("#login_button")
-  
       this.login_button.addEventListener("click", () => {
         this.dispatchEvent(new CustomEvent("login_attempt", {detail: {
-          login: this.login_field.value,
+          username: this.username_field.value,
           password: this.password_field.value }
         }))
       })
@@ -26,4 +25,3 @@ class LoginView extends EventTarget {
   }
   
   export default LoginView
-  

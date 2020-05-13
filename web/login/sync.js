@@ -1,4 +1,4 @@
-class Server{
+class Sync{
     async login(credentials){
         const login_response = await fetch('/user/login', {
             method: "POST",
@@ -31,3 +31,5 @@ class Server{
         return user_data;
     }
 }
+
+export default Sync
