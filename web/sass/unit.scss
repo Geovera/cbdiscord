@@ -2,34 +2,7 @@
 #units_table{
     color: whitesmoke;
     text-align: center;
-    
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: whitesmoke !important;
-}
-table.dataTable.display tbody tr.odd{
-    background-color: rgb(10, 10, 10);
-
-    .sorting_1{
-        background-color: rgb(10, 10, 10);
-
-    }
-}
-
-table.dataTable.display tbody tr.even{
-    background-color: rgb(37, 37, 37);
-    .sorting_1{
-        background-color: rgb(37, 37, 37);
-    }
-}
-.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
-    color: whitesmoke;
-}
-
-.dataTables_wrapper{
-    padding: 10px;
-    outline: 1px black solid;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin-top: 10px;
 }
 
 .tab2{
@@ -37,33 +10,44 @@ table.dataTable.display tbody tr.even{
     border: 1px black solid;
 }
 
-table_component{
-    margin-top: 50px;
-    grid-area: content;
-
-    grid-template: 
-        "table details"
-        /1fr   200px
-    ;
+.my_units{
+    background-color: rgb(141, 11, 11);
+    max-width: 600px;
+}
+.overflow_table{
+    overflow: auto;
+    max-width: 100%;
+    width: 100%;
 }
 
-table_wrapper{
+table-component{
+    grid-template: 
+        "table details" 600px
+        /1fr 600px
+    ;
+    display: grid;
+    position: relative;
+}
+
+table-wrapper{
     grid-area: table;
-    width: 100%;
     display: inline-block;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 25px;
+    min-width: 300px;
+
 }
 
 unit-detail{
     grid-area: details;
     text-align: center;
-    position: relative;
+    position: absolute;
     display: inline-block;
     background-color: rgb(27, 27, 27);
     height: 600px;
-    width: 500px;
-    left: 50%;
+    width: 100%;
     margin-top: 50px;
-    margin-left: -250px;
     outline: 1px black solid;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding-top: 20px;

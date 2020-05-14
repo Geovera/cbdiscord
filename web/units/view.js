@@ -1,3 +1,5 @@
+import TableView from "../views/table_view.js";
+
 const default_columns =[
     {title: "ID", term: "id"},
     {title: "Name", term: "name"},
@@ -23,31 +25,14 @@ const default_columns =[
 
 class UnitTableView extends EventTarget{
 
-    constructor(columns){
+    constructor(){
         super();
 
-        this.columns = columns ? columns : default_columns;
-        this.table      = $("#units_table")
-        this.datatable = this.table.DataTable({
-            columns: this.columns
-        });
-        const datatable = this.datatable;
-        const view = this;
-        $("#units_table tbody").on("click", "tr", function(){
-            const index = datatable.row(this).index();
-            view.dispatchEvent(new CustomEvent("row_click", {detail: index}));
-        })
+        this.table_view = new TableView(default_columns);
     }
 
     drawTable(data){
-        const data_set = data.map((ele) => {
-            var d = [];
-            this.columns.forEach((col) =>{
-                d.push(ele[col.term]);
-            })
-            return d;
-        });
-        this.datatable.clear().rows.add(data_set).draw();
+        this.table_view.drawTable(data);
     }
 }
 
