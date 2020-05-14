@@ -4,20 +4,24 @@ nav-bar {
   color: #dbdbdb;
   grid-template: "title options user"/1fr 5fr 1fr;
   background-color: #751010;
+  max-height: 100px;
 }
 
 bar-title {
-  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+  min-width: 260px;
 }
 bar-title a {
   grid-area: title;
   font-size: 300%;
-  color: whitesmoke;
+  color: white;
   text-decoration: none;
 }
 
 bar-options {
   grid-area: options;
+  min-width: 500px;
 }
 
 .dropdown {
@@ -27,6 +31,26 @@ bar-options {
   font-size: 30px;
   min-width: 160px;
   height: 100%;
+}
+
+.bar-element {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  font-size: 30px;
+  min-width: 160px;
+  height: 100%;
+}
+.bar-element a {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.bar-element:hover {
+  background-color: #9c4949;
 }
 
 .dropdown-content {
@@ -46,9 +70,6 @@ bar-options {
   background-color: #3b0f0f;
 }
 
-.dropdown:hover {
-  background-color: #9c4949;
-}
 .dropdown:hover .dropdown-content {
   display: block;
 }
