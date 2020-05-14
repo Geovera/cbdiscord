@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf8"/>
+        <script src="sugar.js"></script>
+        <script>Sugar.extend()</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+        <script src="./myunits/module.js" type="module"></script>
+        <link rel="stylesheet" href="./stylesheets/main.css"/>
+
+    </head>
+    <body>
+        <nav-placeholder></nav-placeholder>
+        <script src="/navbar/navbar.js"></script>
+        <table-component>
+            <table-wrapper>
+                <div class="tab tab2">
+                    <button id="my_units" class="tablinks active">My Units</button>
+                    <button id="add_units" class="tablinks">Units to Add</button>
+                </div>
+                <table id="units-table" class="display" style="max-width: 500px;"></table>
+            </table-wrapper>
+            <unit-detail>
+                <image class="unit-img"></image>
+                <div class="unit-name">
+                    ---
+                </div>
+                <div class="unit-level">
+                    <p>Unit Level:</p>
+                    <input id="level-input" type="number"/>
+                    <p>Elite:</p>
+                    <input id="elite-ckb" type="checkbox"/>
+                </div>
+                <div class="unit-button">
+                    <button class="unit-button">Submit</button>
+                </div>
+            </unit-detail>
+        </table-component>
+    </body>
+</html>

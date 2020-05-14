@@ -38,6 +38,19 @@ userModel.getUserUnits = async(id) => {
     return data;
 }
 
+userModel.getUserUnitsInverse = async(id) => {
+    const sql_txt = `SELECT u.*, 0 as unit_level, 0 as elite_flg
+                     FROM units as u
+                     LEFT JOIN (SELECT u.id as uid
+                                FROM users as us
+                                LEFT JOIN users_units as uu ON us.id = uu.user_id
+                                LEFT JOIN units as u ON uu.unit_id = u.id
+                                WHERE us.id = ? ORDER BY u.name ASC) as e ON e.uid = u.id
+                     WHERE e.uid IS NULL;`
+    const data = await db.con.query(sql_txt, [id]);
+    return data;
+}
+
 userModel.getUserUnit = async(id, term) =>{
     const unit_id = parseInt(term, 10);
     if(isNaN(unit_id)){
@@ -139,7 +152,6 @@ userModel.registerUser = async (username, password) =>{
 
 userModel.loginUser = async (username, password) =>{
     const hashPassword = await crypto.hash(password);
-    console.log(username, hashPassword)
     const sql_text = 'SELECT id, username from users WHERE username = ? AND password = ?';
     const data = await db.con.query(sql_text, [username, hashPassword]);
 

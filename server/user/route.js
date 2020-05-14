@@ -43,7 +43,6 @@ router.post('/login', async (context, next) =>{
         if(!user){
             throw Error('No user found')
         }
-        console.log(user);
         context.session.user_id = user.id;
         context.response.body = {username: user.username};
         context.status = 200;
@@ -117,6 +116,20 @@ authRouter.get('/units', async (context, next) => {
     }
 });
 
+authRouter.get('/units-inverse', async (context, next) => {
+    try{
+        const data = await userModel.getUserUnitsInverse(context.session.user_id);
+        if(data.length===1  && data[0].id===null){
+            throw Error('No Units Found')
+        }
+        context.response.body = {units: data};
+        context.status = 200;
+    }catch(error){
+        console.log(error)
+        context.throw(400, 'No Units Found');
+    }
+});
+
 authRouter.get('/unit/:term', async (context, next) =>{
     try{
         const data = await userModel.getUserUnit(context.session.user_id, context.params.term)
@@ -134,7 +147,8 @@ authRouter.post('/unit', async (context, next) => {
         if(!body.unit_id){
             throw Error('No Unit Id To assign')
         }
-        await userModel.assignUserUnit(context.session.user_id, body.unit_id, body.unit_level);
+        console.log(body)
+        await userModel.assignUserUnit(context.session.user_id, body.unit_id, body);
         context.status = 204;
     }catch(error){
         console.log(error);
