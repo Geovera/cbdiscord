@@ -37,13 +37,13 @@ nav-bar {
 }
 
 bar-title {
-  margin-top: 20px;
+  margin-top: 25px;
   text-align: center;
   min-width: 260px;
 }
 bar-title a {
   grid-area: title;
-  font-size: 300%;
+  font-size: 250%;
   color: white;
   text-decoration: none;
 }
@@ -353,7 +353,7 @@ unit-detail {
 }
 
 body {
-  font-family: monospace;
+  font-family: Roboto;
   background-color: #313131;
   color: whitesmoke !important;
   display: grid;
