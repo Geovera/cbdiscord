@@ -1,6 +1,6 @@
 class Sync{
     async login(credentials){
-        const login_response = await fetch('/user/login', {
+        const login_response = await fetch('/api/user/login', {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: {
@@ -16,7 +16,7 @@ class Sync{
     }
 
     async register(credentials){
-        const register_response = await fetch('/user/register', {
+        const register_response = await fetch('/api/user/register', {
             method: "POST",
             body: JSON.stringify(credentials),
             headers: {

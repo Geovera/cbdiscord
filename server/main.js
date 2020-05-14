@@ -23,10 +23,10 @@ app.keys = [ENV.SESS_KEY]
 app.use(bodyParser());
 app.use(session(SESS_CONFIG, app));
 
-router.use('/unit', unitRouter.routes(), unitRouter.allowedMethods());
-router.use('/user', userRouter.routes(), userRouter.allowedMethods());
+router.use('/api/unit', unitRouter.routes(), unitRouter.allowedMethods());
+router.use('/api/user', userRouter.routes(), userRouter.allowedMethods());
 
-authRouter.use('/user', userAuthRouter.routes(), userAuthRouter.allowedMethods());
+authRouter.use('/api/user', userAuthRouter.routes(), userAuthRouter.allowedMethods());
 
 app.use(router.routes()).use(router.allowedMethods());
 
