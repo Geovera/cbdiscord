@@ -12,6 +12,7 @@ class MyUnitsController{
         this.view.addEventListener("row_click", (event) => this.changeUnitDetail(event.detail));
         this.view.addEventListener("add_unit", (event) => this.addUnit(event.detail));
         this.view.addEventListener("modify_unit", (event) => this.modifyUnit(event.detail));
+        this.view.addEventListener("delete_unit", (event) => this.deleteUnit(event.detail));
 
         this.getMyUnits();
     }
@@ -23,18 +24,29 @@ class MyUnitsController{
             this.view.unitAdded();
         }catch(error){
             console.log(error);
-            alert('Insertion to update')
+            alert('Failed to Insert')
         }
     }
 
     async modifyUnit(data){
         try{
             await this.sync.modifyUnit(data);
-            alert('Update Successful')
-            this.view.unitModified();
+            alert('Update Successful');
+            this.view.unitsModified();
         }catch(error){
             console.log(error);
-            alert('Failed to update')
+            alert('Failed to Update')
+        }
+    }
+
+    async deleteUnit(id){
+        try{
+            await this.sync.deleteUnit(id);
+            alert('Delete Successful');
+            this.view.unitsModified();
+        }catch(error){
+            console.log(error);
+            alert('Failed to Delete')
         }
     }
 

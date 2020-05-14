@@ -1,5 +1,5 @@
 
-#units-table{
+#units_table{
     color: whitesmoke;
     text-align: center;
     
@@ -37,7 +37,7 @@ table.dataTable.display tbody tr.even{
     border: 1px black solid;
 }
 
-table-component{
+table_component{
     margin-top: 50px;
     grid-area: content;
 
@@ -47,7 +47,7 @@ table-component{
     ;
 }
 
-table-wrapper{
+table_wrapper{
     grid-area: table;
     width: 100%;
     display: inline-block;
@@ -69,17 +69,18 @@ unit-detail{
     padding-top: 20px;
 }
 
-.unit-img{
+.unit_img{
     width: 300px;
     height: 400px;
-    background-color: white;
+    background-color: rgb(184, 184, 184);
+    border: 2px solid rgb(83, 83, 83);
 }
-.unit-name{
+.unit_name{
     padding-top: 10px;
     font-size: 25px;
     display: block;
 }
-.unit-level{
+.unit_level{
     height: 50px;
     display: block;
     p{
@@ -87,13 +88,30 @@ unit-detail{
         display: inline;
     }
 }
-.unit-elite{
+.unit_elite{
     display: inline-block;
 }
-.unit-button{
+.unit_button{
     display: inline;
     button{
         left:50%;
+        height: 30px;
+        width: 60px;
+        background-color: grey;
+        border-radius: 3px;
+        color: whitesmoke;
         text-align: center;
     }
+}
+.add_button{
+    background-color: green !important;
+    border: 2px solid rgb(3, 102, 20);
+}
+.modify_button{
+    background-color: rgb(53, 53, 255) !important;
+    border: 2px solid rgb(4, 4, 124);
+}
+.delete_button{
+    background-color: red !important;
+    border: 2px solid rgb(83, 3, 3);
 }

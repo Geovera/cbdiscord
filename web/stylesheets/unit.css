@@ -1,4 +1,4 @@
-#units-table {
+#units_table {
   color: whitesmoke;
   text-align: center;
 }
@@ -36,13 +36,13 @@ table.dataTable.display tbody tr.even .sorting_1 {
   border: 1px black solid;
 }
 
-table-component {
+table_component {
   margin-top: 50px;
   grid-area: content;
   grid-template: "table details"/1fr 200px;
 }
 
-table-wrapper {
+table_wrapper {
   grid-area: table;
   width: 100%;
   display: inline-block;
@@ -64,37 +64,58 @@ unit-detail {
   padding-top: 20px;
 }
 
-.unit-img {
+.unit_img {
   width: 300px;
   height: 400px;
-  background-color: white;
+  background-color: #b8b8b8;
+  border: 2px solid #535353;
 }
 
-.unit-name {
+.unit_name {
   padding-top: 10px;
   font-size: 25px;
   display: block;
 }
 
-.unit-level {
+.unit_level {
   height: 50px;
   display: block;
 }
-.unit-level p {
+.unit_level p {
   font-size: 15px;
   display: inline;
 }
 
-.unit-elite {
+.unit_elite {
   display: inline-block;
 }
 
-.unit-button {
+.unit_button {
   display: inline;
 }
-.unit-button button {
+.unit_button button {
   left: 50%;
+  height: 30px;
+  width: 60px;
+  background-color: grey;
+  border-radius: 3px;
+  color: whitesmoke;
   text-align: center;
+}
+
+.add_button {
+  background-color: green !important;
+  border: 2px solid #036614;
+}
+
+.modify_button {
+  background-color: #3535ff !important;
+  border: 2px solid #04047c;
+}
+
+.delete_button {
+  background-color: red !important;
+  border: 2px solid #530303;
 }
 
 /*# sourceMappingURL=unit.css.map */

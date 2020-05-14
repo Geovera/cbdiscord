@@ -27,13 +27,13 @@ class UnitTableView extends EventTarget{
         super();
 
         this.columns = columns ? columns : default_columns;
-        this.table      = $("#units-table")
+        this.table      = $("#units_table")
         this.datatable = this.table.DataTable({
             columns: this.columns
         });
         const datatable = this.datatable;
         const view = this;
-        $("#units-table tbody").on("click", "tr", function(){
+        $("#units_table tbody").on("click", "tr", function(){
             const index = datatable.row(this).index();
             view.dispatchEvent(new CustomEvent("row_click", {detail: index}));
         })

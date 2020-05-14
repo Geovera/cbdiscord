@@ -27,7 +27,7 @@ class Sync{
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
     }
 
     async modifyUnit(data){
@@ -37,7 +37,13 @@ class Sync{
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
+    }
+
+    async deleteUnit(id){
+        const response = await fetch(`/api/user/unit/${id}`, {
+            method: "DELETE",
+        });
     }
 }
 

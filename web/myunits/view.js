@@ -39,21 +39,23 @@ class MyUnitView extends EventTarget{
         this.my_units_add.addEventListener("click", (event) =>{
             this.changeTab(event.currentTarget);
             this.dispatchEvent(new CustomEvent("unit_tab_change"))
-        })
+        });
         this.add_units.addEventListener("click", () =>{
             this.changeTab(event.currentTarget);
             this.dispatchEvent(new CustomEvent("add_tab_change"))
-        })
+        });
         this.unit_table_view.addEventListener("row_click", (event) =>{
             this.dispatchEvent(new CustomEvent("row_click", {detail: event.detail}));
-        })
-        this.unit_detail_view.addEventListener("submit_detail", (event) =>{
-            if(this.my_units_tab){
-                this.dispatchEvent(new CustomEvent("modify_unit", {detail: event.detail}));
-            }else{
-                this.dispatchEvent(new CustomEvent("add_unit", {detail: event.detail}));
-            }
-        })
+        });
+        this.unit_detail_view.addEventListener("delete_unit", (event) =>{
+            this.dispatchEvent(new CustomEvent("delete_unit", {detail: event.detail}));
+        });
+        this.unit_detail_view.addEventListener("modify_unit", (event) =>{
+            this.dispatchEvent(new CustomEvent("modify_unit", {detail: event.detail}));
+        });
+        this.unit_detail_view.addEventListener("add_unit", (event) =>{
+            this.dispatchEvent(new CustomEvent("add_unit", {detail: event.detail}));
+        });
     }
 
     changeTab(tab){
@@ -64,6 +66,7 @@ class MyUnitView extends EventTarget{
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
         this.my_units_tab = !this.my_units_tab;
+        this.unit_detail_view.toggleTabs(this.my_units_tab);
         tab.className += " active";
     }
 
@@ -80,7 +83,7 @@ class MyUnitView extends EventTarget{
         this.dispatchEvent(new CustomEvent("add_tab_change"))
     }
 
-    unitModified(){
+    unitsModified(){
         this.dispatchEvent(new CustomEvent("unit_tab_change"))
     }
 }
