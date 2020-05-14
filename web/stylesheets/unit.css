@@ -33,6 +33,7 @@ table.dataTable.display tbody tr.even .sorting_1 {
 
 .tab2 {
   text-align: center;
+  border: 1px black solid;
 }
 
 table-component {

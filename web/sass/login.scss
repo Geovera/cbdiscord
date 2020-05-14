@@ -6,7 +6,7 @@ center-div{
     margin-top: 50px;
     margin-left: -250px;
     background-color: rgb(27, 26, 26);
-    height: 500px;
+    height: 300px;
     width: 500px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 
@@ -15,7 +15,8 @@ center-div{
     overflow: hidden;
     // border: 1px solid #ccc;
     background-color: #383838;
-
+    border: 1px solid #ccc;
+    border-bottom: none;
     button{
         font-family: monospace;
         font-size: 20px;
@@ -47,6 +48,7 @@ center-div{
 .tabcontent {
     display: none;
     padding: 6px 12px;
+    height: 235px;
     border: 1px solid #ccc;
     border-top: none;
 }
@@ -59,4 +61,27 @@ center-div{
 @keyframes fadeEffect {
     from {opacity: 0;}
     to {opacity: 1;}
+}
+#Login, #Register{
+  p{
+    font-size: 20px;
+    display: inline;
+  }
+  div{
+    margin: 20px;
+  }
+  input[type=text], input[type=password]{
+    text-decoration: none;
+    background-color: whitesmoke;
+    border: 2px solid grey;
+    border-radius: 4px;
+    height: 25px;
+    width: 200px;
+  }
+  button{
+    border: 2px solid rgb(48, 48, 48);
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+  }
 }

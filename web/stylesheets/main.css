@@ -111,7 +111,7 @@ center-div {
   margin-top: 50px;
   margin-left: -250px;
   background-color: #1b1a1a;
-  height: 500px;
+  height: 300px;
   width: 500px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -119,6 +119,8 @@ center-div {
 .tab {
   overflow: hidden;
   background-color: #383838;
+  border: 1px solid #ccc;
+  border-bottom: none;
 }
 .tab button {
   font-family: monospace;
@@ -149,6 +151,7 @@ center-div {
 .tabcontent {
   display: none;
   padding: 6px 12px;
+  height: 235px;
   border: 1px solid #ccc;
   border-top: none;
 }
@@ -167,6 +170,28 @@ center-div {
     opacity: 1;
   }
 }
+#Login p, #Register p {
+  font-size: 20px;
+  display: inline;
+}
+#Login div, #Register div {
+  margin: 20px;
+}
+#Login input[type=text], #Login input[type=password], #Register input[type=text], #Register input[type=password] {
+  text-decoration: none;
+  background-color: whitesmoke;
+  border: 2px solid grey;
+  border-radius: 4px;
+  height: 25px;
+  width: 200px;
+}
+#Login button, #Register button {
+  border: 2px solid #303030;
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+}
+
 #units-table {
   color: whitesmoke;
   text-align: center;
@@ -202,6 +227,7 @@ table.dataTable.display tbody tr.even .sorting_1 {
 
 .tab2 {
   text-align: center;
+  border: 1px black solid;
 }
 
 table-component {
