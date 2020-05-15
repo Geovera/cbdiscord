@@ -13,9 +13,23 @@ class HousesView extends EventTarget{
     constructor(){
         super();
 
-        this.join_tab           = document.querySelector('.tab');
-        this.join_button        = this.join_tab.querySelector('.join_button');
-        this.houses_table_view  = new TableView($('table-wrapper'), house_columns);
+        this.request_tab           = document.querySelector('.tab');
+        this.request_button        = this.request_tab.querySelector('.request_house');
+        this.houses_table_view     = new TableView($('table-wrapper'), house_columns);
+
+        this.houses_table_view.addEventListener("row_click", (event) =>{
+            this.dispatchEvent(new CustomEvent("house_select", {detail: event.detail}));
+        });
+        this.request_button.addEventListener("click", (event) => {
+            this.dispatchEvent(new CustomEvent("request_attemp"));
+        });
+    }
+
+    hideJoin(){
+        this.request_tab.style.display = "none";
+    }
+    showJoin(){
+        this.request_tab.style.display = "";
     }
 
     drawTable(data){

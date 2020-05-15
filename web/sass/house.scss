@@ -6,7 +6,7 @@
     max-width: 1000px;
     margin-left: -500px;
 
-    .join_house{
+    .request_house{
         float: right;
         margin: 5px;
         color: whitesmoke;
@@ -14,4 +14,19 @@
         background-color: grey;
         border-radius: 3px;
     }
+    .dataTable{
+        tr.even.active{
+            background-color: rgb(151, 151, 151);
+            td.sorting_1{
+                background-color: rgb(151, 151, 151);
+            }
+        }
+        tr.odd.active{
+            background-color: rgb(151, 151, 151);
+            td.sorting_1{
+                background-color: rgb(151, 151, 151);
+            }
+        }
+    }
 }
+

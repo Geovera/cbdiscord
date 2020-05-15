@@ -28,6 +28,9 @@ class Sync{
                 'Content-Type': 'application/json'
             }
         });
+        if(!response.ok){
+            throw Error('Failed to get units')
+        }
     }
 
     async modifyUnit(data){
@@ -38,12 +41,18 @@ class Sync{
                 'Content-Type': 'application/json'
             }
         });
+        if(!response.ok){
+            throw Error('Failed to get units')
+        }
     }
 
     async deleteUnit(id){
         const response = await fetch(`/api/user/unit/${id}`, {
             method: "DELETE",
         });
+        if(!response.ok){
+            throw Error('Failed to get units')
+        }
     }
 }
 

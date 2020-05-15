@@ -4,29 +4,30 @@ class TableView extends EventTarget{
         super();
 
         
-        if(!element)
-        {
+        if(!element){
             throw Error('No element passed');
         }
         if(!columns){
             throw Error('Columns are needed');
         }
-        this.element   = element;
+        this.$element   = element;
         this.columns   = columns;
-        this.table     = element.find('#data_table');
-        this.datatable = this.table.DataTable({
+        this.$table     = element.find('#data_table');
+        this.datatable = this.$table.DataTable({
             columns: this.columns
         });
         if(overflow){
             this.$overflow_div = $("<div></div>").addClass("overflow_table");
-            this.element.find('#data_table_filter').after(this.$overflow_div);
-            this.table.detach();
-            this.$overflow_div.append(this.table);
+            this.$element.find('#data_table_filter').after(this.$overflow_div);
+            this.$table.detach();
+            this.$overflow_div.append(this.$table);
         }
         const datatable = this.datatable;
         const view = this;
-        this.table.children("#units_table tbody").on("click", "tr", function(){
+        this.$table.children("tbody").on("click", "tr", function(){
             const index = datatable.row(this).index();
+            view.$table.children("tbody").children().removeClass("active");
+            $(datatable.row(this).node()).addClass("active");
             view.dispatchEvent(new CustomEvent("row_click", {detail: index}));
         })
     }

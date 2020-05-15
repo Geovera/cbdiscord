@@ -38,6 +38,20 @@ router.get('/all', async (context, next) => {
     }
 });
 
+authRouter.get('/has-house', async (context, next) => {
+    try{
+        if(context.user.house_id){
+            context.response.body = true;
+        }else{
+            context.response.body = false;
+        }
+        context.response.status = 200;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'ERROR');
+    }
+})
+
 authRouter.post('/request', async (context, next) => {
     if(context.user.house_id){
         context.throw(400, 'Already in a house')

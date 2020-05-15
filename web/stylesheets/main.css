@@ -360,13 +360,25 @@ unit-detail {
   max-width: 1000px;
   margin-left: -500px;
 }
-.house_table .join_house {
+.house_table .request_house {
   float: right;
   margin: 5px;
   color: whitesmoke;
   font-size: 15px;
   background-color: grey;
   border-radius: 3px;
+}
+.house_table .dataTable tr.even.active {
+  background-color: #979797;
+}
+.house_table .dataTable tr.even.active td.sorting_1 {
+  background-color: #979797;
+}
+.house_table .dataTable tr.odd.active {
+  background-color: #979797;
+}
+.house_table .dataTable tr.odd.active td.sorting_1 {
+  background-color: #979797;
 }
 
 body {
