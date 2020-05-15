@@ -28,7 +28,7 @@ class UnitTableView extends EventTarget{
     constructor(){
         super();
 
-        this.table_view = new TableView(default_columns);
+        this.table_view = new TableView($('table-wrapper'), default_columns);
     }
 
     drawTable(data){

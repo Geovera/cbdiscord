@@ -33,7 +33,7 @@ class MyUnitView extends EventTarget{
 
         this.my_units_add       = document.querySelector("#my_units");
         this.add_units          = document.querySelector("#add_units");
-        this.unit_table_view    = new TableView(unit_columns, true);
+        this.unit_table_view    = new TableView($('table-wrapper'), unit_columns, true);
         this.unit_detail_view   = new UnitDetailView();
         this.my_units_tab       = true;
         this.my_units_add.addEventListener("click", (event) =>{

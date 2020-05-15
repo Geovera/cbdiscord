@@ -352,6 +352,23 @@ unit-detail {
   border: 2px solid #530303;
 }
 
+.house_table {
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  width: 1000px;
+  max-width: 1000px;
+  margin-left: -500px;
+}
+.house_table .join_house {
+  float: right;
+  margin: 5px;
+  color: whitesmoke;
+  font-size: 15px;
+  background-color: grey;
+  border-radius: 3px;
+}
+
 body {
   font-family: Roboto;
   background-color: #313131;
