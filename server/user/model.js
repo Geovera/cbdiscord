@@ -28,6 +28,16 @@ userModel.getUser = async (context, next) => {
     }
 };
 
+userModel.getUserFullFromId = async (id) => {
+    const sql_text = `SELECT u.id, u.discord_id, u.house_id, u.leadership, u.lk_house_role, r.lk_permission_level
+                      FROM users as u
+                      LEFT JOIN house_role_lk as r ON r.lk_key = u.lk_house_role
+                      WHERE u.id = ? LIMIT 1;`;
+    const data = await db.con.query(sql_text, [id]);
+
+    return data[0];
+}
+
 userModel.getUserUnits = async(id) => {
     const sql_txt = `SELECT u.*, uu.unit_level, uu.elite_flg 
                      FROM users as us

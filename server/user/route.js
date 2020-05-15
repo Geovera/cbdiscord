@@ -147,7 +147,6 @@ authRouter.post('/unit', async (context, next) => {
         if(!body.unit_id){
             throw Error('No Unit Id To assign')
         }
-        console.log(body)
         await userModel.assignUserUnit(context.session.user_id, body.unit_id, body);
         context.status = 204;
     }catch(error){

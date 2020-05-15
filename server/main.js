@@ -9,6 +9,7 @@ const logger = require('koa-logger')
 
 const getUser = require('./user/model');
 const [userRouter, userAuthRouter] = require('./user/route');
+const [houseRouter, houseAuthRouter] = require('./house/route');
 const unitRouter = require('./unit/route');
 const SESS_CONFIG = require('./session_config');
 const ENV = require('./settings')
@@ -25,8 +26,10 @@ app.use(session(SESS_CONFIG, app));
 
 router.use('/api/unit', unitRouter.routes(), unitRouter.allowedMethods());
 router.use('/api/user', userRouter.routes(), userRouter.allowedMethods());
+router.use('/api/house', houseRouter.routes(), houseRouter.allowedMethods());
 
 authRouter.use('/api/user', userAuthRouter.routes(), userAuthRouter.allowedMethods());
+authRouter.use('/api/house', houseAuthRouter.routes(), houseAuthRouter.allowedMethods());
 
 app.use(router.routes()).use(router.allowedMethods());
 
@@ -41,7 +44,7 @@ app.use(async (context, next) => {
 });
 // Add user to context
 app.use(async (context, next) => {
-    const user = getUser.getUserFromId(context.session.user_id);
+    const user = await getUser.getUserFullFromId(context.session.user_id);
     if(user){
         context.user = user;
         await next();
