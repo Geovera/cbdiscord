@@ -48,7 +48,12 @@ Install the node packages:
 ```
 npm install
 ```
-And the API as well as the Web Page should be app
+
+And finally just run:
+```
+node main.js
+```
+The API as well as the Web Page should be up
 
 If you only want to run the API, just remove line 24 in main.js:
 ```js
