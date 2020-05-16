@@ -10,9 +10,9 @@ class TableView extends EventTarget{
         if(!columns){
             throw Error('Columns are needed');
         }
-        this.$element   = element;
+        this.$element   = $(element);
         this.columns   = columns;
-        this.$table     = element.find('#data_table');
+        this.$table     = this.$element.find('#data_table');
         this.datatable = this.$table.DataTable({
             columns: this.columns
         });

@@ -14,31 +14,33 @@
     <body>
         <nav-placeholder></nav-placeholder>
         <script src="/navbar/navbar.js"></script>
-        <table-component>
-            <table-wrapper>
-                <div class="tab tab2">
-                    <button id="my_units" class="tablinks active">My Units</button>
-                    <button id="add_units" class="tablinks">Units to Add</button>
-                </div>
-                <table id="data_table" class="display my_units"></table>
-            </table-wrapper>
-            <unit-detail>
-                <image class="unit_img"></image>
-                <div class="unit_name">
-                    ---
-                </div>
-                <div class="unit_level">
-                    <p>Unit Level:</p>
-                    <input id="level_input" type="number"/>
-                    <p>Elite:</p>
-                    <input id="elite_ckb" type="checkbox"/>
-                </div>
-                <div class="unit_button">
-                    <button class="delete_button">Delete</button>
-                    <button class="modify_button">Update</button>
-                    <button class="add_button">Add</button>
-                </div>
-            </unit-detail>
-        </table-component>
+        <content-body id="myunits">
+            <table-detail>
+                <table-wrapper>
+                    <div class="table_header tab2">
+                        <button id="my_units" class="tablinks active">My Units</button>
+                        <button id="add_units" class="tablinks">Units to Add</button>
+                    </div>
+                    <table id="data_table" class="display my_units"></table>
+                </table-wrapper>
+                <detail>
+                    <image class="unit_img"></image>
+                    <div class="detail_name">
+                        ---
+                    </div>
+                    <div class="unit_level">
+                        <p>Unit Level:</p>
+                        <input id="level_input" type="number"/>
+                        <p>Elite:</p>
+                        <input id="elite_ckb" type="checkbox"/>
+                    </div>
+                    <div class="detail_buttons">
+                        <button class="delete_button">Delete</button>
+                        <button class="modify_button">Update</button>
+                        <button class="add_button">Add</button>
+                    </div>
+                </unit-detail>
+            </table-detail>
+        </content-body>
     </body>
 </html>

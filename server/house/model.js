@@ -122,7 +122,7 @@ model.acceptRequest = async(user_id, house_id) => {
     await db.con.query('COMMIT;');
 }
 
-model.refuseRequest = async(user_id) => {
+model.rejectRequest = async(user_id) => {
     const sql_text = 'DELETE FROM house_requests WHERE user_id = ?;';
 
     await db.con.query(sql_text, [user_id]);
@@ -138,6 +138,44 @@ model.leaveHouse = async(user_id) => {
     const sql_text = 'UPDATE users SET house_id = NULL, lk_house_role = NULL WHERE id = ?;';
 
     await db.con.query(sql_text, [user_id]);
+}
+
+model.getMembers = async(house_id) => {
+    const sql_text = `SELECT u.id, u.username, u.leadership, hr.lk_name as house_role, hr.lk_key
+                      FROM users as u
+                      LEFT JOIN house_role_lk as hr ON hr.lk_key = u.lk_house_role
+                      WHERE u.house_id = ?;`;
+
+    const data = await db.con.query(sql_text, [house_id]);
+    return data;
+}
+
+model.modifyMemberRole = async(member_id, role) => {
+    const sql_text = 'UPDATE users SET lk_house_role = ? WHERE id = ?;';
+
+    await db.con.query(sql_text, [role, member_id]);
+}
+
+model.changeHouseLiege = async(liege_id, member_id) => {
+    const sql_text = `UPDATE users SET lk_house_role = 'kng' WHERE id = ?;`;
+    const sql_text2 = `UPDATE users SET lk_house_role = 'lg' WHERE id = ?;`;
+
+    await db.con.query('START TRANSACTION;')
+
+    await db.con.query(sql_text, [liege_id]);
+    await db.con.query(sql_text2, [member_id]);
+
+    await db.con.query('COMMIT;');
+}
+
+model.getMemberUnits = async(member_id) => {
+    const sql_txt = `SELECT u.*, uu.unit_level, uu.elite_flg 
+                     FROM users as us
+                     LEFT JOIN users_units as uu ON us.id = uu.user_id
+                     LEFT JOIN units as u ON uu.unit_id = u.id
+                     WHERE us.id = ? ORDER BY u.name ASC;`
+    const data = await db.con.query(sql_txt, [member_id]);
+    return data;
 }
 
 module.exports = model;

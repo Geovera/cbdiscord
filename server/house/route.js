@@ -1,17 +1,19 @@
-const Koa = require('koa');
-const Router = require('@koa/router');
+const Koa           = require('koa');
+const Router        = require('@koa/router');
 
-const router = new Router();
-const authRouter = new Router();
-const houseModel = require('./model');
+const router        = new Router();
+const authRouter    = new Router();
+const houseModel    = require('./model');
+
+const userModel     = require('../user/model')
 
 const HOUSE_ROLES = {
-    LIEGE: 0,
-    SEN: 1,
-    MAR: 2,
-    NOB: 3,
-    TRE: 4,
-    KNG: 5
+    lg: 0,
+    sen: 1,
+    mar: 2,
+    nob: 3,
+    tre: 4,
+    kng: 5
 }
 
 function checkPermissions(context, ROLE){
@@ -19,11 +21,20 @@ function checkPermissions(context, ROLE){
         context.throw(403, "No Permissions")
     }
 }
+function checkPermissionsNoThrow(context, ROLE){
+    return ROLE >= context.user.lk_permission_level;
+
+}
 function checkHouse(context){
     const house_id = context.user.house_id ? context.user.house_id : context.request.body.house_id;
 
     if(!house_id || house_id!==context.user.house_id){
         context.throw(403, "Not your House");
+    }
+}
+function hasHouse(context){
+    if(!context.user.house_id){
+        context.throw(400, 'No house');
     }
 }
 
@@ -35,6 +46,80 @@ router.get('/all', async (context, next) => {
     }catch(error){
         console.log(error);
         context.throw(400, 'Unable to get houses');
+    }
+});
+
+authRouter.get('/members', async(context, next) => {
+    hasHouse(context);
+    try{
+        const data = await houseModel.getMembers(context.user.house_id);
+        context.response.status = 200;
+        context.response.body = data;
+    }catch(error){
+        console.log(error);
+        context.throw(400, "Failed to get members")
+    }
+});
+
+authRouter.get('/member-units/:member_id', async(context, next) => {
+    checkPermissions(context, HOUSE_ROLES.sen);
+    try{
+        const data = await houseModel.getMemberUnits(context.params.member_id);
+        context.response.status = 200;
+        context.response.body = data;
+    }catch(error){
+        console.log(error);
+        context.throw('Failed to get Member Units');
+    }
+});
+
+authRouter.post('/modify-role', async(context, next) => {
+    hasHouse(context);
+    const body = context.request.body;
+    if(!body || !body.member_id || !body.role){
+        context.throw(400, 'Missing parameters')
+    }
+    try{
+        const member = await userModel.getUserFullFromId(body.member_id);
+        if(!member){
+            throw Error('Member does not exists');
+        }
+        if(member.house_id !== context.user.house_id){
+            throw Error('Not on the same house');
+        }
+        if(member.lk_permission_level <= context.user.lk_permission_level){
+            throw Error("Member permission level is high")
+        }
+        if(checkPermissionsNoThrow(context, HOUSE_ROLES.lg)){
+            if(body.role === 'lg'){
+                await houseModel.changeHouseLiege(context.user.id, member.id);
+            }else{
+                await houseModel.modifyMemberRole(member.id, body.role);
+            }
+        }else{
+            if(context.user.lk_house_role < HOUSE_ROLES[body.role]){
+                await houseModel.modifyHouse(member.id, body.role);
+            }else{
+                throw Error("Can't modify to the same level");
+            }
+        }
+        context.response.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Failed to modify role')
+    }
+})
+
+authRouter.get('/my-permission', async(context, next) => {
+    if(!context.user.house_id || context.user.lk_permission_level === undefined){
+        context.throw(400, 'No house');
+    }
+    try{
+        context.response.status = 200;
+        context.response.body   = context.user.lk_permission_level;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'ERROR');
     }
 });
 
@@ -82,9 +167,9 @@ authRouter.delete('/request', async (context, next) => {
     }
 });
 
-authRouter.get('/requests/:house_id', async (context, next) => {
-    checkHouse(context);
-    checkPermissions(context, HOUSE_ROLES.SEN);
+authRouter.get('/requests', async (context, next) => {
+    // checkHouse(context);
+    checkPermissions(context, HOUSE_ROLES.sen);
     try{
         const data = await houseModel.getHouseRequests(context.user.house_id);
         context.response.status = 200;
@@ -97,12 +182,13 @@ authRouter.get('/requests/:house_id', async (context, next) => {
 
 authRouter.post('/accept-request', async (context, next) => {
     checkHouse(context);
-    checkPermissions(context, HOUSE_ROLES.SEN);
+    checkPermissions(context, HOUSE_ROLES.sen);
     try{
         const body = context.request.body;
         if(!body || !body.user_id){
             throw Error("No user to accept");
         }
+        console.log(body.user_id);
         await houseModel.acceptRequest(body.user_id, context.user.house_id);
         context.response.status = 204;
     }catch(error){
@@ -111,28 +197,38 @@ authRouter.post('/accept-request', async (context, next) => {
     }
 });
 
-authRouter.delete('/refuse-request', async (context, next) => {
+authRouter.delete('/reject-request/:user_id', async (context, next) => {
     checkHouse(context);
-    checkPermissions(context, HOUSE_ROLES.SEN);
+    checkPermissions(context, HOUSE_ROLES.sen);
     try{
         const body = context.request.body;
-        if(!body || !body.user_id){
+        if(!context.params.user_id){
             throw Error("No user to refuse");
         }
-        await houseModel.refuseRequest(body.user_id);
+        await houseModel.rejectRequest(context.params.user_id);
         context.response.status = 204;
     }catch(error){
         console.log(error);
-        context.throw(400, 'Unable to Accept Request')
+        context.throw(400, 'Unable to reject Request')
     }
 });
 
 authRouter.delete('/delete-member/:user_id', async (context, next) => {
-    checkPermissions(context, HOUSE_ROLES.SEN);
+    checkPermissions(context, HOUSE_ROLES.sen);
     if(context.params.user_id===context.session.user_id){
         context.throw(400, "Can't delete yourself");
     }
     try{
+        const member = await userModel.getUserFullFromId(context.params.user_id);
+        if(!member){
+            throw Error('Member does not exists');
+        }
+        if(member.house_id !== context.user.house_id){
+            throw Error('Not on the same house');
+        }
+        if(member.lk_permission_level <= context.user.lk_permission_level){
+            throw Error("Member permission level is high")
+        }
         await houseModel.deleteMember(context.params.user_id);
         context.response.status = 204;
     }catch(error){
@@ -144,7 +240,6 @@ authRouter.delete('/delete-member/:user_id', async (context, next) => {
 authRouter.delete('/leave-house', async (context, next) => {
     if(context.user.lk_house_role==='lg'){
         try{
-            console.log('asd')
             await houseModel.deleteHouse(context.user.house_id, context.session.user_id);
             context.response.status = 204;
         }catch(error){

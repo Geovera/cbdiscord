@@ -13,7 +13,7 @@ class HousesView extends EventTarget{
     constructor(){
         super();
 
-        this.request_tab           = document.querySelector('.tab');
+        this.request_tab           = document.querySelector('.table_header');
         this.request_button        = this.request_tab.querySelector('.request_house');
         this.houses_table_view     = new TableView($('table-wrapper'), house_columns);
 

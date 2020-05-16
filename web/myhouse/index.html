@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf8"/>
+        <script src="sugar.js"></script>
+        <script>Sugar.extend()</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+        <script src="./myhouse/module.js" type="module"></script>
+        <link rel="stylesheet" href="./stylesheets/main.css"/>
+
+    </head>
+    <body>
+        <nav-placeholder></nav-placeholder>
+        <script src="/navbar/navbar.js"></script>
+        <content-body id="my_house">
+            <div id="area_1">
+                <war-participation>
+                    <table-wrapper>
+                        <div class="table_header">
+                            <span>Participation:</span>
+                            <button id="yes">Yes</button>
+                            <button id="no">No</button>
+                            <button id="maybe">Maybe</button>
+                        </div>
+                        <table id="data_table" class="display"></table>
+                    </table-wrapper>
+                </war-participation>
+                <members-area>
+                    <table-detail style="display: initial;">
+                        <table-wrapper>
+                            <div class="table_header">
+                                <p>Members</p>
+                            </div>
+                            <table id="data_table" class="display"></table>
+                        </table-wrapper>
+                        <detail style="display: none;">
+                            <image class="weapon_img"></image>
+                            <div class="detail_name">
+                                ---
+                            </div>
+                        <div>
+                            <label for="roles">Roles:</label>
+                            <select id="role">
+                            </select>
+                        </div>
+                        <div class="detail_buttons">
+                            <button class="delete_button">Kick</button>
+                            <button class="modify_button">Update</button>
+                        </div>
+                        </detail>
+                    </table-detail>
+                </members-area>
+            </div>
+            <div id="area_2">
+                <requests-area style="display: none;">
+                    <div class="table_header">
+                        <div class="title"><span>House</span></div>
+                        <button id="reject">Reject</button>
+                        <button id="accept">Accept</button>
+                    </div>
+                    <table id="data_table" class="display"></table>
+                </requests-area>
+                <member-units style="display: none;">
+                    <div class="table_header">
+                        <div class="title"><span>Units</span></div>
+                    </div>
+                    <table id="data_table" class="display"></table>
+                </member-units>
+            </div>
+        </content-body>
+    </body>
+</html>

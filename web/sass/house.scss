@@ -30,3 +30,124 @@
     }
 }
 
+#my_house{
+    display: grid;
+    grid-template:
+        "area-1" 500px
+        "area-2" 500px
+        /1fr
+    ;
+    #area_1{
+        display: grid;
+        grid-template:
+            "war-participation members"
+            /500px             1fr
+        ;
+        table-wrapper{
+            width: 100%;
+            margin: 0px;
+        }
+        war-participation{
+            grid-area: war-participation;
+            padding: 10px;
+        }
+        members-area{
+            grid-area: members;
+            padding: 10px;
+            // background-color: blue;
+
+            .table_header{
+                text-align: center;
+                font-size: 20px;
+            }
+
+            detail{
+                left: 50%;
+                height: 350px;
+                width: 400px;
+                margin-left: -200px;
+                padding-top: 20px;
+            }
+            .weapon_img{
+                height: 200px;
+                width: 200px;
+            }
+            #role{
+                margin-top: 10px;
+                width: 100px;
+            }
+
+            .detail_buttons{
+                button{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+    #area_2{
+        display: grid;
+        grid-template:
+            "requests member-units"
+            /500px             1fr
+        ;
+        requests-area{
+            grid-area: requests;
+            padding: 10px;
+            // background-color: red;
+
+            .dataTable{
+                tr.even.active{
+                    background-color: rgb(151, 151, 151);
+                    td.sorting_1{
+                        background-color: rgb(151, 151, 151);
+                    }
+                }
+                tr.odd.active{
+                    background-color: rgb(151, 151, 151);
+                    td.sorting_1{
+                        background-color: rgb(151, 151, 151);
+                    }
+                }
+            }
+
+            .table_header{
+                .title{
+                    text-align: left;
+                    display: inline;
+                    p{
+                        display: inline;
+                        text-align: left;
+                    }
+                }
+            }
+            #accept:hover{
+                background-color: rgb(119, 190, 119);
+            }
+            #reject:hover{
+                background-color: rgb(190, 119, 119);
+            }
+        }
+        member-units{
+            grid-area: member-units;
+            // background-color: green;
+
+            .table_header{
+                .title{
+                    text-align: left;
+                    display: inline;
+                    p{
+                        display: inline;
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+
+    .table_header{
+        text-align: right;
+        button{
+            color: rgb(204, 204, 204);
+        }
+    }
+}

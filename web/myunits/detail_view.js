@@ -3,12 +3,12 @@ class UnitDetailView extends EventTarget{
     constructor(){
         super();
 
-        this.unit = {};
-        this.element = document.querySelector("unit-detail");
+        this.unit       = {};
+        this.element    = document.querySelector("detail");
 
         this.fields = {
             img             : this.element.querySelector(".unit_img"),
-            name            : this.element.querySelector(".unit_name"),
+            name            : this.element.querySelector(".detail_name"),
             level_input     : this.element.querySelector("#level_input"),
             elite_input     : this.element.querySelector("#elite_ckb"),
             delete_button   : this.element.querySelector(".delete_button"),
@@ -39,11 +39,11 @@ class UnitDetailView extends EventTarget{
         if(flg){
             this.fields.delete_button.style.display = "";
             this.fields.modify_button.style.display = "";
-            this.fields.add_button.style.display = "none";
+            this.fields.add_button.style.display    = "none";
         }else{
             this.fields.delete_button.style.display = "none";
             this.fields.modify_button.style.display = "none";
-            this.fields.add_button.style.display = "";
+            this.fields.add_button.style.display    = "";
         }
         this.clean();
     }
@@ -60,17 +60,17 @@ class UnitDetailView extends EventTarget{
 
     refresh(){
         if(this.unit.img){
-            this.fields.img.src = this.unit.img;
+            this.fields.img.src         = this.unit.img;
         }
-        this.fields.name.innerText = this.unit.name;
-        this.fields.level_input.value = this.unit.unit_level;
+        this.fields.name.innerText      = this.unit.name;
+        this.fields.level_input.value   = this.unit.unit_level;
         this.fields.elite_input.checked = this.unit.elite_flg;
     }
 
     clean(){
-        this.fields.img.src = "";
-        this.fields.name.innerText = "---";
-        this.fields.level_input.value = 0;
+        this.fields.img.src             = "";
+        this.fields.name.innerText      = "---";
+        this.fields.level_input.value   = 0;
         this.fields.elite_input.checked = false;
         this.unit = {};
     }

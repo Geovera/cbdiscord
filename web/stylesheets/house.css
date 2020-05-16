@@ -27,4 +27,98 @@
   background-color: #979797;
 }
 
+#my_house {
+  display: grid;
+  grid-template: "area-1" 500px "area-2" 500px/1fr;
+}
+#my_house #area_1 {
+  display: grid;
+  grid-template: "war-participation members"/500px 1fr;
+}
+#my_house #area_1 table-wrapper {
+  width: 100%;
+  margin: 0px;
+}
+#my_house #area_1 war-participation {
+  grid-area: war-participation;
+  padding: 10px;
+}
+#my_house #area_1 members-area {
+  grid-area: members;
+  padding: 10px;
+}
+#my_house #area_1 members-area .table_header {
+  text-align: center;
+  font-size: 20px;
+}
+#my_house #area_1 members-area detail {
+  left: 50%;
+  height: 350px;
+  width: 400px;
+  margin-left: -200px;
+  padding-top: 20px;
+}
+#my_house #area_1 members-area .weapon_img {
+  height: 200px;
+  width: 200px;
+}
+#my_house #area_1 members-area #role {
+  margin-top: 10px;
+  width: 100px;
+}
+#my_house #area_1 members-area .detail_buttons button {
+  margin-top: 10px;
+}
+#my_house #area_2 {
+  display: grid;
+  grid-template: "requests member-units"/500px 1fr;
+}
+#my_house #area_2 requests-area {
+  grid-area: requests;
+  padding: 10px;
+}
+#my_house #area_2 requests-area .dataTable tr.even.active {
+  background-color: #979797;
+}
+#my_house #area_2 requests-area .dataTable tr.even.active td.sorting_1 {
+  background-color: #979797;
+}
+#my_house #area_2 requests-area .dataTable tr.odd.active {
+  background-color: #979797;
+}
+#my_house #area_2 requests-area .dataTable tr.odd.active td.sorting_1 {
+  background-color: #979797;
+}
+#my_house #area_2 requests-area .table_header .title {
+  text-align: left;
+  display: inline;
+}
+#my_house #area_2 requests-area .table_header .title p {
+  display: inline;
+  text-align: left;
+}
+#my_house #area_2 requests-area #accept:hover {
+  background-color: #77be77;
+}
+#my_house #area_2 requests-area #reject:hover {
+  background-color: #be7777;
+}
+#my_house #area_2 member-units {
+  grid-area: member-units;
+}
+#my_house #area_2 member-units .table_header .title {
+  text-align: left;
+  display: inline;
+}
+#my_house #area_2 member-units .table_header .title p {
+  display: inline;
+  text-align: left;
+}
+#my_house .table_header {
+  text-align: right;
+}
+#my_house .table_header button {
+  color: #cccccc;
+}
+
 /*# sourceMappingURL=house.css.map */
