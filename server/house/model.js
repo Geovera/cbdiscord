@@ -210,4 +210,15 @@ model.warParticipation = async (user_id, house_id, decision) => {
     await db.con.query('COMMIT;');
 }
 
+model.getParticipation = async (house_id) => {
+    const sql_text = `SELECT u.username, uw.decision
+                      FROM users as u
+                      LEFT JOIN users_war as uw ON uw.user_id = u.id
+                      LEFT JOIN war_days as w ON w.id = uw.war_id
+                      WHERE uw.house_id = ? AND w.completed = 0;`;
+
+    const data = await db.con.query(sql_text, [house_id]);
+    return data;
+}
+
 module.exports = model;

@@ -37,6 +37,10 @@ class MyHouseController extends EventTarget{
         });
     }
 
+    drawParticipationTable(data){
+        this.participation_view.drawTable(data);
+    }
+
     drawMemberUnitsTable(data){
         this.member_units_view.drawTable(data);
     }

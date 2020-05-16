@@ -45,6 +45,7 @@ class MyHouseController{
     }
 
     async refresh(){
+        this.getParticipation();
         this.getMembers();
         this.getPermissionLevel();
         this.getRequests();
@@ -108,7 +109,23 @@ class MyHouseController{
     }
 
     async attempParticipate(decision){
-        console.log(decision)
+        try{
+            await this.sync.updateParticipation(decision);
+            alert('Update Successfull');
+            this.refresh();
+        }catch(error){
+            console.log(error);
+            alert('Failed to Update Participaation');
+        }
+    }
+
+    async getParticipation(){
+        try{
+            const data = await this.sync.getParticipation();
+            this.view.drawParticipationTable(data);
+        }catch(error){
+            console.log(error);
+        }
     }
 
     async getPermissionLevel(){

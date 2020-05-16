@@ -85,8 +85,30 @@ class Sync{
         }
 
         const data = await response.json();
-
         return data;
+    }
+
+    async getParticipation(){
+        const response = await fetch('/api/house/participation');
+        if(!response.ok){
+            throw Error('Failed to get participations');
+        }
+
+        const data = await response.json();
+        return data;
+    }
+
+    async updateParticipation(decision){
+        const response = await fetch('/api/house/participation',{
+            method: "POST",
+            body: JSON.stringify({decision: decision}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if(!response.ok){
+            throw Error('Failed to Update Participation');
+        }
     }
 }
 

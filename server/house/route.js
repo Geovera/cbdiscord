@@ -315,6 +315,18 @@ authRouter.delete('/:house_id', async (context, next) => {
     }
 });
 
+authRouter.get('/participation', async (context, next) => {
+    hasHouse(context);
+    try{
+        const data = await houseModel.getParticipation(context.user.house_id);
+        context.response.status = 200;
+        context.response.body = data;
+    }catch(error){
+        console.log(error);
+        context.throw('Failed to get Participation');
+    }
+});
+
 authRouter.post('/participation', async (context, next) => {
     hasHouse(context);
     const body = context.request.body;

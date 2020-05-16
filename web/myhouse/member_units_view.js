@@ -18,7 +18,6 @@ class MemberUnitsView extends EventTarget{
     }
 
     drawTable(data){
-        console.log(data)
         this.table_view.drawTable(data);
     }
 

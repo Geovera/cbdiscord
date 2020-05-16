@@ -28,7 +28,7 @@ class ParticipationView extends EventTarget{
     }
 
     drawTable(data){
-        this.table_view(data);
+        this.table_view.drawTable(data);
     }
 }
 
