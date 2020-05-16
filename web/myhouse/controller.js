@@ -1,5 +1,31 @@
 import Sync from "./sync.js";
 
+function isEquivalent(a, b) {
+    // Create arrays of property names
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+
+    // If number of properties is different,
+    // objects are not equivalent
+    if (aProps.length != bProps.length) {
+        return false;
+    }
+
+    for (var i = 0; i < aProps.length; i++) {
+        var propName = aProps[i];
+
+        // If values of same property are not equal,
+        // objects are not equivalent
+        if (a[propName] !== b[propName]) {
+            return false;
+        }
+    }
+
+    // If we made it this far, objects
+    // are considered equivalent
+    return true;
+}
+
 class MyHouseController{
 
     constructor(view){
@@ -8,6 +34,10 @@ class MyHouseController{
         this.permission_level   = 1000;
         this.members            = [];
         this.requests           = [];
+        this.house              = {};
+
+        this.view.addEventListener("create_house",          (event) => this.createHouse(event.detail));
+        this.view.addEventListener("modify_house",          (event) => this.modifyHouse(event.detail));
         this.view.addEventListener("participation_attemp",  (event) => this.attempParticipate(event.detail));
         this.view.addEventListener("member_select",         (event) => this.selectMember(event.detail));
         this.view.addEventListener("modify_member_role",    (event) => this.modifyMemberRole(event.detail.member_id, event.detail.role));
@@ -20,6 +50,30 @@ class MyHouseController{
         setInterval(() => {
             this.refresh();
         }, 10000);
+
+        this.view.updateViews(undefined);
+
+    }
+
+    async createHouse(house){
+        try{
+            await this.sync.createHouse(house);
+            alert('House Created');
+            this.refresh();
+        }catch(error){
+            console.log(error);
+            alert('Failed to Create House')
+        }
+    }
+    async modifyHouse(house){
+        try{
+            await this.sync.modifyHouse(house);
+            alert('House Modified');
+            this.refresh();
+        }catch(error){
+            console.log(error);
+            alert('Failed to Modify House')
+        }
     }
 
     async modifyMemberRole(member_id, role){
@@ -45,6 +99,7 @@ class MyHouseController{
     }
 
     async refresh(){
+        this.getHouse();
         this.getParticipation();
         this.getMembers();
         this.getPermissionLevel();
@@ -136,6 +191,20 @@ class MyHouseController{
                 this.view.updatePermissions(this.permission_level);
             }
         }catch(error){
+            console.log(error);
+        }
+    }
+
+    async getHouse(){
+        try{
+            const house = await this.sync.getHouse();
+            if(!isEquivalent(this.house, house)){
+                this.house = house;
+                this.view.updateViews(house);
+            }
+        }catch(error){
+            this.house = {};
+            this.view.updateViews();
             console.log(error);
         }
     }

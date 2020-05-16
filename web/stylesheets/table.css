@@ -1,8 +1,10 @@
 .table_header {
   overflow: hidden;
+  position: relative;
   background-color: #383838;
   border: 1px solid #ccc;
   border-bottom: none;
+  min-height: 50px;
 }
 .table_header button {
   font-family: monospace;
@@ -103,15 +105,18 @@ detail .detail_buttons button {
   color: whitesmoke;
   text-align: center;
 }
-detail .add_button {
+
+.add_button {
   background-color: green !important;
   border: 2px solid #036614;
 }
-detail .modify_button {
+
+.modify_button {
   background-color: #3535ff !important;
   border: 2px solid #04047c;
 }
-detail .delete_button {
+
+.delete_button {
   background-color: red !important;
   border: 2px solid #530303;
 }

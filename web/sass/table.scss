@@ -1,9 +1,10 @@
 .table_header {
     overflow: hidden;
-    // border: 1px solid #ccc;
+    position: relative;
     background-color: #383838;
     border: 1px solid #ccc;
     border-bottom: none;
+    min-height: 50px;
     button{
         font-family: monospace;
         font-size: 20px;
@@ -108,16 +109,16 @@ detail{
             text-align: center;
         }
     }
-    .add_button{
-        background-color: green !important;
-        border: 2px solid rgb(3, 102, 20);
-    }
-    .modify_button{
-        background-color: rgb(53, 53, 255) !important;
-        border: 2px solid rgb(4, 4, 124);
-    }
-    .delete_button{
-        background-color: red !important;
-        border: 2px solid rgb(83, 3, 3);
-    }
+}
+.add_button{
+    background-color: green !important;
+    border: 2px solid rgb(3, 102, 20);
+}
+.modify_button{
+    background-color: rgb(53, 53, 255) !important;
+    border: 2px solid rgb(4, 4, 124);
+}
+.delete_button{
+    background-color: red !important;
+    border: 2px solid rgb(83, 3, 3);
 }

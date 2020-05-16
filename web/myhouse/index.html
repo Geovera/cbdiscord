@@ -15,14 +15,44 @@
         <nav-placeholder></nav-placeholder>
         <script src="/navbar/navbar.js"></script>
         <content-body id="my_house">
-            <div id="area_1">
+            <house-area>
+                <div class="table_header">
+                    <p id="title" class="header_title">---</p>
+                    <button id="modify_btn" class="modify_button one" style="display: none;">Update</button>
+                    <button id="create_btn" class="add_button one" style="display: none;">Create</button>
+                    <button id="edit_btn" class="two">Edit</button>
+                </div>
+                <div id="house_details">
+                    <div id="house_text">
+                        <span id="house_name">House Name: ---</span>
+                        <span id="house_level">House Level: ---</span>
+                        <span id="liege_name">Liege: ---</span>
+                        <span id="camp_location">Camp Location: ---</span>
+                    </div>
+                    <div id="house_edit"  style="display: none;">
+                        <div>
+                            <span>Name:&nbsp;</span>
+                            <input id="house_name" type="text"/>
+                        </div>
+                        <div>
+                            <span>House Level:&nbsp;</span>
+                            <input id="house_level" type="number"/>
+                        </div>
+                        <div>
+                            <span>Camp Location:&nbsp;</span>
+                            <input id="camp_location" type="text"/>
+                        </div>
+                    </div>
+                </div>
+            </house-area>
+            <div id="area_1" style="display: none;">
                 <war-participation>
                     <table-wrapper>
                         <div class="table_header">
-                            <span>Participation:</span>
-                            <button id="yes">Yes</button>
-                            <button id="no">No</button>
-                            <button id="maybe">Maybe</button>
+                            <p class="header_title">Participation:</p>
+                            <button id="yes" class="one">Yes</button>
+                            <button id="no" class="two">No</button>
+                            <button id="maybe" class="three">Maybe</button>
                         </div>
                         <table id="data_table" class="display"></table>
                     </table-wrapper>
@@ -31,7 +61,7 @@
                     <table-detail style="display: initial;">
                         <table-wrapper>
                             <div class="table_header">
-                                <p>Members</p>
+                                <p class="header_title">Members</p>
                             </div>
                             <table id="data_table" class="display"></table>
                         </table-wrapper>
@@ -53,18 +83,19 @@
                     </table-detail>
                 </members-area>
             </div>
-            <div id="area_2">
-                <requests-area style="display: none;">
+            <div id="area_2" style="display: none;">
+                <requests-area>
                     <div class="table_header">
-                        <div class="title"><span>House</span></div>
-                        <button id="reject">Reject</button>
-                        <button id="accept">Accept</button>
+                        <!-- <div class="title"><span>House</span></div> -->
+                        <p class="header_title">House</p>
+                        <button id="reject" class="one">Reject</button>
+                        <button id="accept" class="two">Accept</button>
                     </div>
                     <table id="data_table" class="display"></table>
                 </requests-area>
                 <member-units style="display: none;">
                     <div class="table_header">
-                        <div class="title"><span>Units</span></div>
+                        <p class="header_title">Units</p>
                     </div>
                     <table id="data_table" class="display"></table>
                 </member-units>

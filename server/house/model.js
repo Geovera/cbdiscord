@@ -13,9 +13,14 @@ model.getAll = async () => {
     return data;
 }
 
-model.getHouse = async() => {
-    // implement getting house details
-    throw Error('Not Implemented');
+model.getHouse = async(house_id) => {
+    const sql_text = `SELECT h.*, u.username as liege_username
+                      FROM houses as h
+                      LEFT JOIN users as u on u.id = h.liege_id 
+                      WHERE h.id = ? LIMIT 1`;
+    const data = await db.con.query(sql_text, house_id);
+    
+    return data[0];
 }
 
 model.insertHouse = async(body, liege_id) => {

@@ -258,9 +258,10 @@ authRouter.delete('/leave-house', async (context, next) => {
     }
 });
 
-router.get('/', async (context, next) => {
+authRouter.get('/', async (context, next) => {
+    hasHouse(context);
     try{
-        const data = await houseModel.getHouse();
+        const data = await houseModel.getHouse(context.user.house_id);
         context.response.status = 200;
         context.response.body = data;
     }catch(error){
@@ -288,13 +289,16 @@ authRouter.post('/', async (context, next) => {
 });
 
 authRouter.put('/:house_id', async (context, next) => {
+    console.log('asd')
     checkHouse(context);
     checkPermissions(context, HOUSE_ROLES.LIEGE)
     try{
+        console.log('dsa')
         const body = context.request.body;
         if(!body){
             throw Error('No params')
         }
+        console.log(body)
         await houseModel.modifyHouse(context.user.house_id, body);
         context.response.status = 204;
     }catch(error){

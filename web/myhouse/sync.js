@@ -1,5 +1,42 @@
 class Sync{
 
+    async getHouse(){
+        const response = await fetch("/api/house/");
+
+        if(!response.ok){
+            throw Error('Failed to get requests');
+        }
+
+        const data = await response.json();
+        return data;
+    }
+
+    async createHouse(house){
+        const response = await fetch("/api/house", {
+            method: "POST",
+            body: JSON.stringify(house),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if(!response.ok){
+            throw Error('Failed to Create House');
+        }
+    }
+
+    async modifyHouse(house){
+        const response = await fetch(`/api/house/${house.id}`, {
+            method: "PUT",
+            body: JSON.stringify(house),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if(!response.ok){
+            throw Error('Failed to Modify House');
+        }
+    }
+
     async getRequests(){
         const response = await fetch("/api/house/requests");
 
