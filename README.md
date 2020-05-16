@@ -33,6 +33,17 @@ OR you can just invite my [bot](https://discord.com/oauth2/authorize?client_id=5
 ## Web App
 Inside the server folder
 
+You'll need to provide a .env file on the discord folder with the following:
+```
+DB_HOST=SOME_DB
+DB_PORT=SOME_PORT
+DB_USER=SOME_USER
+DB_PASS=SOME_PASSWORD
+DB_NAME=SOME_NAME
+SESS_KEY=SOME_KEY
+PASSWORD_SALT=SOME_SALT
+```
+
 Install the node packages:
 ```
 npm install
@@ -44,4 +55,4 @@ If you only want to run the API, just remove line 24 in main.js:
 app.use(serve(`${__dirname}/../web`))
 ```
 
-OR you can just go to my [page](http://http://34.86.43.193/)!
+OR you can just go to my [page](http://34.86.43.193/)!
