@@ -169,13 +169,45 @@ model.changeHouseLiege = async(liege_id, member_id) => {
 }
 
 model.getMemberUnits = async(member_id) => {
-    const sql_txt = `SELECT u.*, uu.unit_level, uu.elite_flg 
+    const sql_text = `SELECT u.*, uu.unit_level, uu.elite_flg 
                      FROM users as us
                      LEFT JOIN users_units as uu ON us.id = uu.user_id
                      LEFT JOIN units as u ON uu.unit_id = u.id
                      WHERE us.id = ? ORDER BY u.name ASC;`
-    const data = await db.con.query(sql_txt, [member_id]);
+    const data = await db.con.query(sql_text, [member_id]);
     return data;
+}
+
+model.getCurrentWar = async() => {
+    const sql_text = 'SELECT * FROM war_days WHERE completed = 0 LIMIT 1;'
+
+    const data = await db.con.query(sql_text);
+    return data[0];
+}
+
+model.insertNewWar = async() => {
+    const sql_text = 'UPDATE war_days SET completed = 1;';
+    const sql_text2 = 'INSERT INTO war_days (day) VALUES (CURDATE());'
+
+    await db.con.query('START TRANSACTION;');
+
+    await db.con.query(sql_text);
+    await db.con.query(sql_text2);
+
+    await db.con.query('COMMIT;');
+}
+
+model.warParticipation = async (user_id, house_id, decision) => {
+    const sql_text = 'SELECT @current_war_id:=id FROM war_days WHERE completed = 0 LIMIT 1;';
+    const sql_text2 = `INSERT INTO users_war (user_id, war_id, house_id, decision) VALUES (?, @current_war_id, ?, ?) 
+                       ON DUPLICATE KEY UPDATE decision = ?`;
+
+    await db.con.query('START TRANSACTION;');
+    
+    await db.con.query(sql_text);
+    await db.con.query(sql_text2, [user_id, house_id, decision, decision]);
+
+    await db.con.query('COMMIT;');
 }
 
 module.exports = model;

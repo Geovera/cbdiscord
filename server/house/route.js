@@ -1,11 +1,12 @@
 const Koa           = require('koa');
 const Router        = require('@koa/router');
+const CronJob       = require('cron').CronJob;
 
 const router        = new Router();
 const authRouter    = new Router();
 const houseModel    = require('./model');
 
-const userModel     = require('../user/model')
+const userModel     = require('../user/model');
 
 const HOUSE_ROLES = {
     lg: 0,
@@ -313,6 +314,49 @@ authRouter.delete('/:house_id', async (context, next) => {
         context.throw(400, "Unable to Delete");
     }
 });
+
+authRouter.post('/participation', async (context, next) => {
+    hasHouse(context);
+    const body = context.request.body;
+    if(!body || !body.decision){
+        context.throw(400, 'No decision found');
+    }
+    try{
+        await houseModel.warParticipation(context.user.id, context.user.house_id, body.decision);
+        context.response.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Failed to Update Participation');
+    }
+});
+
+router.get('/current-war', async (context, next) => {
+    try{
+        const data = await houseModel.getCurrentWar();
+        if(!data){
+            throw Error('Failed to get Current War');
+        }
+        context.response.status = 200;
+        context.response.body = data;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Failed to get Current War');
+    }
+});
+
+async function insertNewWar(){
+    try{
+        await houseModel.insertNewWar();
+        console.log('Inserted new War')
+    }catch(error){
+        console.log(error);
+    }
+}
+
+const war_job = new CronJob('30 22 * * Tue,Sat', ()=> {
+    insertNewWar();
+});
+war_job.start();
 
 
 module.exports = [router, authRouter];
