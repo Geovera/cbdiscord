@@ -5,7 +5,7 @@ const house_columns = [
     {title: 'Name', term: 'house_name'},
     {title: 'Liege', term: 'liege_username'},
     {title: 'Level', term: 'house_level'},
-    {title: 'Camp Location', term: 'camp_locaiton'}
+    {title: 'Camp Location', term: 'camp_locaton'}
 ];
 
 class HousesView extends EventTarget{
