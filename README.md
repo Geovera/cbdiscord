@@ -9,7 +9,7 @@ Instructions for databse setup pending.
 ## Discord Bot
 Inside the discord folder.
 
-You'll need to provide a .env file on the discord folder with the following:
+You'll need to provide a .env file with the following:
 ```
 DISCORD_TOKEN=SOME_TOKEN
 API_URL_BASE=SOME_URL
@@ -33,7 +33,7 @@ OR you can just invite my [bot](https://discord.com/oauth2/authorize?client_id=5
 ## Web App
 Inside the server folder
 
-You'll need to provide a .env file on the discord folder with the following:
+You'll need to provide a .env file with the following:
 ```
 DB_HOST=SOME_DB
 DB_PORT=SOME_PORT
