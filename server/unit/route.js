@@ -6,10 +6,9 @@ const Router = require('@koa/router');
 const router = new Router();
 const unitModel = require('./model');
 router.get('/all', async (context, next) =>{
-    const sql_text = 'SELECT * FROM units ORDER BY name ASC;';
     try{
         const data = await unitModel.getAll();
-        context.response.body = {units: data};
+        context.response.body = data;
     }catch(error){
         console.log(error);
         context.throw(500, 'Server Error');

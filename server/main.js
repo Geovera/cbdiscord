@@ -59,7 +59,7 @@ async function main(){
 
     app.use(authRouter.routes()).use(authRouter.allowedMethods());
 
-    app.listen(3000, () => console.log('Server Started'));
+    app.listen(process.env.SEV_PORT ? process.env.SEV_PORT : 3000, () => console.log('Server Started'));
 }
 
 

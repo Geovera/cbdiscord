@@ -77,6 +77,7 @@ router.post('/discord-register', async(context, next) =>{
         try{
             await userModel.addDiscordIdToUser(context.user.id, discord_id);
             context.status = 204;
+            return;
         }catch(error){
             console.log(error);
             context.throw(422, 'Invalid Discord Id')
@@ -91,8 +92,11 @@ router.post('/discord-register', async(context, next) =>{
         context.throw(422, 'Invalid Discord Id')
     }
     if(!user){
+        if(!body.username || !body.password){
+            context.throw(422, 'Missing parameters')
+        }
         try{
-            await userModel.createUserWithDiscord(discord_id);
+            await userModel.createUserWithDiscord(discord_id, body.username, body.password);
             context.status = 204;
         }catch(error){
             context.throw(422, 'Failed to create user with Discord Id')
@@ -108,7 +112,7 @@ authRouter.get('/units', async (context, next) => {
         if(data.length===1  && data[0].id===null){
             throw Error('No Units Found')
         }
-        context.response.body = {units: data};
+        context.response.body = data;
         context.status = 200;
     }catch(error){
         console.log(error)
@@ -122,7 +126,7 @@ authRouter.get('/units-inverse', async (context, next) => {
         if(data.length===1  && data[0].id===null){
             throw Error('No Units Found')
         }
-        context.response.body = {units: data};
+        context.response.body = data;
         context.status = 200;
     }catch(error){
         console.log(error)

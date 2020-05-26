@@ -5,7 +5,7 @@ class HouseView  extends EventTarget{
 
         this.element            = element;
         this.is_editing         = false;
-        this.modify_btn          = this.element.querySelector('#modify_btn');
+        this.modify_btn         = this.element.querySelector('#modify_btn');
         this.create_btn         = this.element.querySelector('#create_btn')
         this.edit_btn           = this.element.querySelector('#edit_btn');
         this.title              = this.element.querySelector('#title');
@@ -34,7 +34,7 @@ class HouseView  extends EventTarget{
         });
         this.create_btn.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("create_house", {detail: {
-                house_name:           this.edit_fields.name.value,
+                house_name:         this.edit_fields.name.value,
                 house_level:        this.edit_fields.house_level.value,
                 camp_location:      this.edit_fields.camp_location.value,
             }}))
@@ -42,7 +42,7 @@ class HouseView  extends EventTarget{
         this.modify_btn.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("modify_house", {detail: {
                 house_id:       this.house.id,
-                house_name:           this.edit_fields.name.value ? this.edit_fields.name.value : this.house.name,
+                house_name:     this.edit_fields.name.value ? this.edit_fields.name.value : this.house.name,
                 house_level:    this.edit_fields.house_level.value ? this.edit_fields.house_level.value : this.house.house_level,
                 camp_location:  this.edit_fields.camp_location.value ? this.edit_fields.camp_location.name.value : this.house.camp_location,
             }}))

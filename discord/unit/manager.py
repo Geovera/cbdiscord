@@ -119,11 +119,11 @@ class UnitManager(commands.Cog):
         """Gets all units"""
 
         data = await Api.get('/unit/all')
-        if(data==None or len(data['units'])==0):
+        if(data==None or len(data)==0):
             return await ctx.send('No units found')
         
         units_data = []
-        for item in data['units']:
+        for item in data:
             units_data.append(Unit(**item))
 
         await self.createUnitTable(ctx, units_data)

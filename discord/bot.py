@@ -2,14 +2,17 @@ import asyncio
 import discord
 
 import discord
-from requests import Session
-from discord.ext import commands
-from unit.manager import UnitManager
-from user.manager import UserManager
+from requests                   import Session
+from discord.ext                import commands
+from unit.manager               import UnitManager
+from user.manager               import UserManager
+from house.manager              import HouseManager
+from house.membership.manager   import MembershipManager
+from house.war.manager          import WarManager
 from util.command_error_handler import CommandErrorHandler
-from util.help import EditedMinimalHelpCommand, PaginatedHelpCommand
-from util.api_requests import Api
-from settings import DISCORD_TOKEN
+from util.help                  import EditedMinimalHelpCommand, PaginatedHelpCommand
+from util.api_requests          import Api
+from settings                   import DISCORD_TOKEN
 
 
 class ConqBot(commands.Bot):
@@ -45,6 +48,9 @@ bot = ConqBot(command_prefix='>')
 bot.add_cog(CommandErrorHandler(bot))
 bot.add_cog(UserManager(bot))
 bot.add_cog(UnitManager(bot))
+bot.add_cog(HouseManager(bot))
+bot.add_cog(MembershipManager(bot))
+bot.add_cog(WarManager(bot))
 
 @bot.event
 async def on_ready():

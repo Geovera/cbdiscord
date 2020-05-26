@@ -1,12 +1,14 @@
 import asyncio
 import discord
 import json
-from discord.ext import commands
-from discord.user import User
-from unit.model import Unit
-from util.api_requests import Api, ApiError
-from util.embed_style import EmbedStyle
-from .uu_parameters import *
+import random
+import string
+from discord.ext            import commands
+from discord.user           import User
+from unit.model             import Unit
+from util.api_requests      import Api, ApiError
+from util.embed_style       import EmbedStyle
+from .uu_parameters         import *
 
 class UserManager(commands.Cog):
 
@@ -18,14 +20,26 @@ class UserManager(commands.Cog):
     async def handleApiError(self, ctx, error):
         return await ctx.send(error.message)
 
+    def randomPassword(self, stringLength=10):
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(stringLength))
 
     @commands.command()
-    async def registerUser(self, ctx):
-        """Register user. Only done once per user. Can't access user related content otherwise"""
-        req_body = {'discordId': ctx.message.author.id}
+    async def registerUser(self, ctx, *, params:register_params=register_params.defaults()):
+        """Register user. Only done once per user. Can't access user related content otherwise.
+        Username is optional and the discord username is default. Password is random if not specified"""
+
+        username = params.get('username')
+        user = ctx.message.author;
+        if(username==None):
+            username = user.name
+        password = params.get('password')
+        if(password==None):
+            password = self.randomPassword(random.randint(8, 16))
+        req_body = {'discordId': ctx.message.author.id, 'username': username, 'password': password}
         try:
             await Api.post('/user/discord-register', req_body)
-            await ctx.send('Register succesful')
+            await user.send('Register succesful\nUsername: {0}\nPassword: {1}'.format(username, password))
         except ApiError as error:
             return await self.handleApiError(ctx, error)
 
@@ -126,7 +140,7 @@ class UserManager(commands.Cog):
             session = await self.bot.getUserSession(ctx.message.author)
             data = await Api.getSession('/user/units', session)
             units_data = []
-            for item in data['units']:
+            for item in data:
                 units_data.append(Unit(**item))
             return await EmbedStyle.createPages(self.bot, ctx, units_data, 5, self.createUnitPage)
         except ApiError as error:

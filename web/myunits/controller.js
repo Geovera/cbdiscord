@@ -57,7 +57,7 @@ class MyUnitsController{
     async getMyUnits(){
         this.data = [];
         try{
-            this.data = (await this.sync.getMyUnits()).units;
+            this.data = await this.sync.getMyUnits();
         }catch(error){
             console.log(error);
             // alert('Failed to get units')
@@ -68,7 +68,7 @@ class MyUnitsController{
     async getUnitsToAdd(){
         this.data = [];
         try{
-            this.data = (await this.sync.getUnitsToAdd()).units;
+            this.data = await this.sync.getUnitsToAdd();
         }catch(error){
             console.log(error);
             // alert('Failed to get units')

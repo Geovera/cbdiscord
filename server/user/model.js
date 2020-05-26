@@ -104,7 +104,7 @@ userModel.assignUserUnit = async(id, unit_id, body) =>{
     if(body){
         for (let i = 0; i < uu_columns.length; i++) {
             const element = uu_columns[i];
-            if(body[element]!==undefined){
+            if(body[element]!==undefined && body[element]!==null){
                 column_text += ', ' + element;
                 value_text += ', ' + db.con.escape(body[element]);
             }
@@ -120,7 +120,7 @@ userModel.modifyUserUnit = async(id, unit_id, body) =>{
 
     for (let i = 0; i < uu_columns.length; i++) {
         const element = uu_columns[i];
-        if(body[element]!==undefined){
+        if(body[element]!==undefined && body[element]!==null){
             if(set_text===''){
                 set_text += `${element} = ${db.con.escape(body[element])}`;
             }else{
@@ -147,14 +147,14 @@ userModel.addDiscordIdToUser = async (user_id, discord_id) =>{
     const data = await db.con.query(sql_text, [discordId, user_id])
 }
 
-userModel.createUserWithDiscord = async (discord_id) =>{
-    const sql_text = 'INSERT INTO users (discord_id) VALUES (?);';
-    await db.con.query(sql_text, [discord_id]);
+userModel.createUserWithDiscord = async (discord_id, username, password) =>{
+    const hashPassword = await crypto.hash(password);
+    const sql_text = 'INSERT INTO users (discord_id, username, password) VALUES (?, ?, ?);';
+    await db.con.query(sql_text, [discord_id, username, hashPassword]);
 }
 
 userModel.registerUser = async (username, password) =>{
     const hashPassword = await crypto.hash(password);
-    console.log(username, hashPassword)
 
     const sql_text = 'INSERT INTO users (username, password) VALUES (?, ?)';
     await db.con.query(sql_text, [username, hashPassword])

@@ -4,6 +4,14 @@ const model = {};
 
 const h_columns = ['house_name', 'house_level', 'camp_location'];
 
+async function checkHouseRequest(house_id, user_id){
+    const sql_exists = 'SELECT EXISTS(SELECT * FROM house_requests WHERE house_id = ? AND user_id = ?) as result;'
+    const exists = await db.con.query(sql_exists, [house_id , user_id]);
+    if(exists[0] && exists[0].result===0){
+        throw Error("Membership request not send for user's house")
+    }
+}
+
 model.getAll = async () => {
     const sql_text = `SELECT h.*, u.username as liege_username
                       FROM houses as h
@@ -30,7 +38,7 @@ model.insertHouse = async(body, liege_id) => {
     if(body){
         for (let i = 0; i < h_columns.length; i++) {
             const element = h_columns[i];
-            if(body[element]!==undefined){
+            if(body[element]!==undefined && body[element]!==null){
                 column_text += ', ' + element;
                 value_text += ', ' + db.con.escape(body[element]);
             }
@@ -59,7 +67,7 @@ model.modifyHouse = async(house_id, body) => {
 
     for (let i = 0; i < h_columns.length; i++) {
         const element = h_columns[i];
-        if(body[element]!==undefined){
+        if(body[element]!==undefined && body[element]!==null){
             if(set_text===''){
                 set_text += `${element} = ${db.con.escape(body[element])}`;
             }else{
@@ -116,6 +124,7 @@ model.getHouseRequests = async(house_id) => {
 }
 
 model.acceptRequest = async(user_id, house_id) => {
+    checkHouseRequest(house_id, user_id);
     const sql_text = 'DELETE FROM house_requests WHERE user_id = ?;';
     const sql_text2 = 'UPDATE users SET house_id = ?, lk_house_role = \'kng\' WHERE id = ?;';
 
@@ -127,7 +136,9 @@ model.acceptRequest = async(user_id, house_id) => {
     await db.con.query('COMMIT;');
 }
 
-model.rejectRequest = async(user_id) => {
+model.rejectRequest = async(user_id, house_id) => {
+    checkHouseRequest(house_id, user_id);
+
     const sql_text = 'DELETE FROM house_requests WHERE user_id = ?;';
 
     await db.con.query(sql_text, [user_id]);

@@ -25,7 +25,7 @@ class Sync{
     }
 
     async modifyHouse(house){
-        const response = await fetch(`/api/house/${house.id}`, {
+        const response = await fetch(`/api/house`, {
             method: "PUT",
             body: JSON.stringify(house),
             headers: {

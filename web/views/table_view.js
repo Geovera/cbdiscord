@@ -11,9 +11,9 @@ class TableView extends EventTarget{
             throw Error('Columns are needed');
         }
         this.$element   = $(element);
-        this.columns   = columns;
+        this.columns    = columns;
         this.$table     = this.$element.find('#data_table');
-        this.datatable = this.$table.DataTable({
+        this.datatable  = this.$table.DataTable({
             columns: this.columns
         });
         if(overflow){
@@ -36,7 +36,7 @@ class TableView extends EventTarget{
         const data_set = data.map((ele) => {
             var d = [];
             this.columns.forEach((col) =>{
-                const t = ele[col.term] !== undefined ? ele[col.term] : '-'
+                const t = ele[col.term] !== undefined ? ele[col.term] : '-';
                 d.push(t);
             })
             return d;

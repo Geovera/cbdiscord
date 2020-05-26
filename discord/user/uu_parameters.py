@@ -10,3 +10,14 @@ param_converter = ArgumentConverter(
         doc='Is Unit Elite',
     )
 )
+
+register_params = ArgumentConverter(
+    username = OptionalArgument(
+        str,
+        doc='Username for web app',
+    ),
+    password = OptionalArgument(
+        str,
+        doc='Password for web app',
+    )
+)

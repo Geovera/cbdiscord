@@ -59,7 +59,7 @@ unitModel.modifyUnit = async (id, body) => {
 
     for (let i = 0; i < unit_columns.length; i++) {
         const element = unit_columns[i];
-        if(body[element]!==undefined){
+        if(body[element]!==undefined && body[element]!==null){
             if(set_text===''){
                 set_text += `${element} = ${db.con.escape(body[element])}`;
             }else{

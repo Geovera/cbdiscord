@@ -182,14 +182,12 @@ authRouter.get('/requests', async (context, next) => {
 });
 
 authRouter.post('/accept-request', async (context, next) => {
-    checkHouse(context);
     checkPermissions(context, HOUSE_ROLES.sen);
     try{
         const body = context.request.body;
         if(!body || !body.user_id){
             throw Error("No user to accept");
         }
-        console.log(body.user_id);
         await houseModel.acceptRequest(body.user_id, context.user.house_id);
         context.response.status = 204;
     }catch(error){
@@ -199,14 +197,13 @@ authRouter.post('/accept-request', async (context, next) => {
 });
 
 authRouter.delete('/reject-request/:user_id', async (context, next) => {
-    checkHouse(context);
     checkPermissions(context, HOUSE_ROLES.sen);
     try{
         const body = context.request.body;
         if(!context.params.user_id){
             throw Error("No user to refuse");
         }
-        await houseModel.rejectRequest(context.params.user_id);
+        await houseModel.rejectRequest(context.params.user_id, context.user.house_id);
         context.response.status = 204;
     }catch(error){
         console.log(error);
@@ -288,17 +285,13 @@ authRouter.post('/', async (context, next) => {
     }
 });
 
-authRouter.put('/:house_id', async (context, next) => {
-    console.log('asd')
-    checkHouse(context);
+authRouter.put('/', async (context, next) => {
     checkPermissions(context, HOUSE_ROLES.LIEGE)
     try{
-        console.log('dsa')
         const body = context.request.body;
         if(!body){
             throw Error('No params')
         }
-        console.log(body)
         await houseModel.modifyHouse(context.user.house_id, body);
         context.response.status = 204;
     }catch(error){
@@ -307,11 +300,10 @@ authRouter.put('/:house_id', async (context, next) => {
     }
 });
 
-authRouter.delete('/:house_id', async (context, next) => {
-    checkHouse(context);
+authRouter.delete('/', async (context, next) => {
     checkPermissions(context, HOUSE_ROLES.LIEGE);
     try{
-        await houseModel.deleteHouse(context.params.house_id, context.user.id);
+        await houseModel.deleteHouse(context.user.house_id, context.user.id);
         context.response.status = 204;
     }catch(error){
         console.log(error);
@@ -322,9 +314,13 @@ authRouter.delete('/:house_id', async (context, next) => {
 authRouter.get('/participation', async (context, next) => {
     hasHouse(context);
     try{
-        const data = await houseModel.getParticipation(context.user.house_id);
+        const war = await houseModel.getCurrentWar();
+        if(!war){
+            throw Error('Failed to get Current War');
+        }
+        const participation = await houseModel.getParticipation(context.user.house_id);
         context.response.status = 200;
-        context.response.body = data;
+        context.response.body = {war: war, participation: participation};
     }catch(error){
         console.log(error);
         context.throw('Failed to get Participation');
