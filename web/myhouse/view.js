@@ -50,8 +50,8 @@ class MyHouseController extends EventTarget{
         this.hideArea2();
     }
 
-    drawParticipationTable(data){
-        this.participation_view.drawTable(data);
+    updateParticipationView(data){
+        this.participation_view.updateParticipation(data);
     }
 
     drawMemberUnitsTable(data){

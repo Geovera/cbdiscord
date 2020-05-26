@@ -177,7 +177,7 @@ class MyHouseController{
     async getParticipation(){
         try{
             const data = await this.sync.getParticipation();
-            this.view.drawParticipationTable(data);
+            this.view.updateParticipationView(data);
         }catch(error){
             console.log(error);
         }
