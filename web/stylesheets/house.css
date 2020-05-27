@@ -29,7 +29,7 @@
 
 #my_house {
   display: grid;
-  grid-template: "house_area" 150px "area-1" 500px "area-2" 500px/1fr;
+  grid-template: "house_area" 150px "area-1" 700px "area-2" 700px/1fr;
 }
 #my_house house-area {
   grid-area: house_area;
