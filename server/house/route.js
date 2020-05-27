@@ -286,7 +286,7 @@ authRouter.post('/', async (context, next) => {
 });
 
 authRouter.put('/', async (context, next) => {
-    checkPermissions(context, HOUSE_ROLES.LIEGE)
+    checkPermissions(context, HOUSE_ROLES.lg)
     try{
         const body = context.request.body;
         if(!body){
@@ -301,7 +301,7 @@ authRouter.put('/', async (context, next) => {
 });
 
 authRouter.delete('/', async (context, next) => {
-    checkPermissions(context, HOUSE_ROLES.LIEGE);
+    checkPermissions(context, HOUSE_ROLES.lg);
     try{
         await houseModel.deleteHouse(context.user.house_id, context.user.id);
         context.response.status = 204;
