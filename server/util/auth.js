@@ -6,7 +6,7 @@ const crypto = require('./crypto');
 async function discordAuth(context, id){
     let sql_text = `SELECT TOP 1 * FROM users WHERE discordId='${id}'`;
     try{
-        let data = await db.con.query(sql_text);
+        let data = await db.pool.query(sql_text);
         console.log(data);
     }catch(error){
         console.log(error);

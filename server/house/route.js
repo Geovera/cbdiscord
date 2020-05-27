@@ -18,7 +18,7 @@ const HOUSE_ROLES = {
 }
 
 function checkPermissions(context, ROLE){
-    if(ROLE < context.user.lk_permission_level){
+    if(!hasHouseNoThrow(context) || ROLE < context.user.lk_permission_level){
         context.throw(403, "No Permissions")
     }
 }
@@ -37,6 +37,9 @@ function hasHouse(context){
     if(!context.user.house_id){
         context.throw(400, 'No house');
     }
+}
+function hasHouseNoThrow(context){
+    return context.user.house_id;
 }
 
 router.get('/all', async (context, next) => {
@@ -301,7 +304,9 @@ authRouter.put('/', async (context, next) => {
 });
 
 authRouter.delete('/', async (context, next) => {
+    hasHouse(context);
     checkPermissions(context, HOUSE_ROLES.lg);
+    console.log('asd')
     try{
         await houseModel.deleteHouse(context.user.house_id, context.user.id);
         context.response.status = 204;

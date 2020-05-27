@@ -10,12 +10,12 @@ const uu_columns = ['unit_level', 'elite_flg'];
 
 userModel.getUserFromId = async (id) => {
     const sql_text = 'SELECT id, discord_id, house_id, leadership FROM users WHERE id = ? LIMIT 1;';
-    const data = await db.con.query(sql_text,[id]);
+    const data = await db.pool.query(sql_text,[id]);
     return data[0];
 }
 userModel.getUserFromDiscord = async (discordId) =>{
     const sql_text = 'SELECT id, discord_id, house_id, leadership FROM users WHERE discord_id = ? LIMIT 1;';
-    const data = await db.con.query(sql_text, [discordId]);
+    const data = await db.pool.query(sql_text, [discordId]);
     return data[0];
 }
 
@@ -33,7 +33,7 @@ userModel.getUserFullFromId = async (id) => {
                       FROM users as u
                       LEFT JOIN house_role_lk as r ON r.lk_key = u.lk_house_role
                       WHERE u.id = ? LIMIT 1;`;
-    const data = await db.con.query(sql_text, [id]);
+    const data = await db.pool.query(sql_text, [id]);
 
     return data[0];
 }
@@ -44,7 +44,7 @@ userModel.getUserUnits = async(id) => {
                      LEFT JOIN users_units as uu ON us.id = uu.user_id
                      LEFT JOIN units as u ON uu.unit_id = u.id
                      WHERE us.id = ? ORDER BY u.name ASC;`
-    const data = await db.con.query(sql_txt, [id]);
+    const data = await db.pool.query(sql_txt, [id]);
     return data;
 }
 
@@ -57,7 +57,7 @@ userModel.getUserUnitsInverse = async(id) => {
                                 LEFT JOIN units as u ON uu.unit_id = u.id
                                 WHERE us.id = ? ORDER BY u.name ASC) as e ON e.uid = u.id
                      WHERE e.uid IS NULL;`
-    const data = await db.con.query(sql_txt, [id]);
+    const data = await db.pool.query(sql_txt, [id]);
     return data;
 }
 
@@ -76,7 +76,7 @@ userModel.getUserUnitById = async (id, unit_id) =>{
                      LEFT JOIN users_units as uu ON us.id = uu.user_id
                      LEFT JOIN units as u ON uu.unit_id = u.id
                      WHERE us.id = ? AND uu.unit_id = ? ORDER BY u.name ASC;`;
-    const data = await db.con.query(sql_text, [id, unit_id]);
+    const data = await db.pool.query(sql_text, [id, unit_id]);
     if(!data[0]){
         throw Error('Unit Not Found')
     }
@@ -89,7 +89,7 @@ userModel.getUserUnitByName = async(id, name) =>{
                      LEFT JOIN users_units as uu ON us.id = uu.user_id
                      LEFT JOIN units as u ON uu.unit_id = u.id
                      WHERE us.id = ? AND u.name LIKE ? ORDER BY u.name ASC;`
-    const data = await db.con.query(sql_text, [id, `%${name}%`]);
+    const data = await db.pool.query(sql_text, [id, `%${name}%`]);
     if(!data[0]){
         throw Error('Unit Not Found')
     }
@@ -100,18 +100,18 @@ userModel.assignUserUnit = async(id, unit_id, body) =>{
     const unit = await unitModel.getUnitById(unit_id);
 
     let column_text = 'user_id, unit_id';
-    let value_text = `${db.con.escape(id)}, ${db.con.escape(unit_id)}`
+    let value_text = `${db.pool.escape(id)}, ${db.pool.escape(unit_id)}`
     if(body){
         for (let i = 0; i < uu_columns.length; i++) {
             const element = uu_columns[i];
             if(body[element]!==undefined && body[element]!==null){
                 column_text += ', ' + element;
-                value_text += ', ' + db.con.escape(body[element]);
+                value_text += ', ' + db.pool.escape(body[element]);
             }
         }
     }
     const sql_text = `INSERT INTO users_units (${column_text}) VALUES (${value_text});`
-    const data = await db.con.query(sql_text);
+    const data = await db.pool.query(sql_text);
 }
 
 userModel.modifyUserUnit = async(id, unit_id, body) =>{
@@ -122,9 +122,9 @@ userModel.modifyUserUnit = async(id, unit_id, body) =>{
         const element = uu_columns[i];
         if(body[element]!==undefined && body[element]!==null){
             if(set_text===''){
-                set_text += `${element} = ${db.con.escape(body[element])}`;
+                set_text += `${element} = ${db.pool.escape(body[element])}`;
             }else{
-                set_text += `, ${element} = ${db.con.escape(body[element])}`;
+                set_text += `, ${element} = ${db.pool.escape(body[element])}`;
             }
         }
     }
@@ -132,38 +132,38 @@ userModel.modifyUserUnit = async(id, unit_id, body) =>{
         throw Error('No Params to Update')
     }
     const sql_text = `UPDATE users_units SET ${set_text} WHERE user_id = ? AND unit_id = ?`
-    const data = await db.con.query(sql_text, [id, unit_id]);
+    const data = await db.pool.query(sql_text, [id, unit_id]);
 }
 
 userModel.deleteUserUnit = async (id, unit_id) => {
     const unit = await unitModel.getUnitById(unit_id);
 
     const sql_text = `DELETE FROM users_units WHERE user_id = ? AND unit_id = ?;`
-    const data = await db.con.query(sql_text, [id, unit_id]);
+    const data = await db.pool.query(sql_text, [id, unit_id]);
 }
 
 userModel.addDiscordIdToUser = async (user_id, discord_id) =>{
     const sql_text = 'UPDATE users SET discord_id = ? WHERE id = ?;';
-    const data = await db.con.query(sql_text, [discordId, user_id])
+    const data = await db.pool.query(sql_text, [discordId, user_id])
 }
 
 userModel.createUserWithDiscord = async (discord_id, username, password) =>{
     const hashPassword = await crypto.hash(password);
     const sql_text = 'INSERT INTO users (discord_id, username, password) VALUES (?, ?, ?);';
-    await db.con.query(sql_text, [discord_id, username, hashPassword]);
+    await db.pool.query(sql_text, [discord_id, username, hashPassword]);
 }
 
 userModel.registerUser = async (username, password) =>{
     const hashPassword = await crypto.hash(password);
 
     const sql_text = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    await db.con.query(sql_text, [username, hashPassword])
+    await db.pool.query(sql_text, [username, hashPassword])
 }
 
 userModel.loginUser = async (username, password) =>{
     const hashPassword = await crypto.hash(password);
     const sql_text = 'SELECT id, username from users WHERE username = ? AND password = ?';
-    const data = await db.con.query(sql_text, [username, hashPassword]);
+    const data = await db.pool.query(sql_text, [username, hashPassword]);
 
     return data[0];
 }
