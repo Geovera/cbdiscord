@@ -3,6 +3,7 @@ server/node_modules/
 server/.env
 discord/.env
 discord/__pycache__
+discord/testy.py
 web/node_modules
 *.pyc
 __pycache__

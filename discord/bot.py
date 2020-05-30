@@ -12,15 +12,18 @@ from house.war.manager          import WarManager
 from util.command_error_handler import CommandErrorHandler
 from util.help                  import EditedMinimalHelpCommand, PaginatedHelpCommand
 from util.api_requests          import Api
+from util.timed_dict            import TimedDict
 from settings                   import DISCORD_TOKEN
 
+
+COOKIE_LIFETIME = 18000;
 
 class ConqBot(commands.Bot):
     def __init__(self, command_prefix='>'):
         super().__init__(
             command_prefix=command_prefix,
             help_command=EditedMinimalHelpCommand())
-        self.id_to_session = {}
+        self.id_to_session = TimedDict()
 
         self.static_help_command = self.help_command
         command_impl = self.help_command._command_impl
@@ -38,6 +41,7 @@ class ConqBot(commands.Bot):
             return self.id_to_session[user.id]
         new_session = Session()
         await Api.postSession('/user/d-login', {"discordId": user.id}, new_session);
+        self.id_to_session.set_key(user.id, new_session, COOKIE_LIFETIME)
         self.id_to_session[user.id] = new_session
 
         return new_session
