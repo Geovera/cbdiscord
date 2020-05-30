@@ -87,16 +87,16 @@ model.modifyHouse = async(house_id, body) => {
     await db.pool.query(sql_text, [house_id]);
 };
 
-model.deleteHouse = async(house_id, liege_id) => {
-    const sql_text = 'DELETE FROM houses WHERE id = ?;';
-    const sql_text2 = 'UPDATE users SET lk_house_role = NULL where id = ?;'
+model.deleteHouse = async(house_id) => {
+    const sql_text = 'UPDATE users SET lk_house_role = NULL where house_id = ?';
+    const sql_text2 = 'DELETE FROM houses WHERE id = ?;';
 
     let con = await db.pool.getConnection();
 
     await con.query('START TRANSACTION;');
 
     await con.query(sql_text, [house_id]);
-    await con.query(sql_text2, [liege_id]);
+    await con.query(sql_text2, [house_id]);
 
     await con.query('COMMIT;');
 
