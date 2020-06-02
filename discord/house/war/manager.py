@@ -103,5 +103,6 @@ class WarManager(commands.Cog):
             out_str += (' | '.join('{0:{width}}'.format(x, width=y) for x, y in zip(row, max_lens))) + '\n'
         out_str += '```'
         embed.add_field(name="Members", value=out_str)
+        embed.set_footer(text=('Total: {0}'.format(len(data))))
 
         return embed
