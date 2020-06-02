@@ -26,7 +26,7 @@ class Sync{
     }
 
     async requestHouse(house_id){
-        const response = await fetch('/api/house/request', {
+        const response = await fetch('/api/house/membership/request', {
             method: "POST",
             body: JSON.stringify({house_id: house_id}),
             headers: {

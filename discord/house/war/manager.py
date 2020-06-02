@@ -18,7 +18,7 @@ class WarManager(commands.Cog):
     async def currentWar(self, ctx):
         """Get current war information"""
         try:
-            data = await Api.get('/house/current-war');
+            data = await Api.get('/house/war');
             date = parser.parse(data.get('day'))
             await ctx.send('Current War Date: {0}/{1}/{2}'.format(date.year, date.month, date.day))
         except ApiError as error:
@@ -27,7 +27,7 @@ class WarManager(commands.Cog):
     async def warParticipation(self, ctx, decision):
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            await Api.postSession('/house/participation', {"decision": decision}, session)
+            await Api.postSession('/house/war/participation', {"decision": decision}, session)
             await ctx.send('Participation updated')
         except ApiError as error:
             await ctx.send(error.message)

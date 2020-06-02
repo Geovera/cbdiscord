@@ -1,7 +1,7 @@
 class Sync{
 
     async getHouse(){
-        const response = await fetch("/api/house/");
+        const response = await fetch("/api/house");
 
         if(!response.ok){
             throw Error('Failed to get requests');
@@ -25,7 +25,7 @@ class Sync{
     }
 
     async modifyHouse(house){
-        const response = await fetch(`/api/house`, {
+        const response = await fetch("/api/house", {
             method: "PUT",
             body: JSON.stringify(house),
             headers: {
@@ -38,7 +38,7 @@ class Sync{
     }
 
     async getRequests(){
-        const response = await fetch("/api/house/requests");
+        const response = await fetch("/api/house/membership/request/all");
 
         if(!response.ok){
             throw Error('Failed to get requests');
@@ -49,7 +49,7 @@ class Sync{
     }
 
     async getMembers(){
-        const response = await fetch("/api/house/members");
+        const response = await fetch("/api/house/member/all");
 
         if(!response.ok){
             throw Error('Failed to get Members');
@@ -60,7 +60,7 @@ class Sync{
     }
 
     async getPermissionLevel(){
-        const response = await fetch("/api/house/my-permission");
+        const response = await fetch("/api/house/membership/permissions");
 
         if(!response.ok){
             throw Error('Failed to get Permissions');
@@ -71,9 +71,9 @@ class Sync{
     }
 
     async modifyMemberRole(member_id, role){
-        const response = await fetch("/api/house/modify-role", {
-            method: "POST",
-            body: JSON.stringify({member_id: member_id, role: role}),
+        const response = await fetch(`/api/house/membership/${member_id}`, {
+            method: "PUT",
+            body: JSON.stringify({role: role}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -84,7 +84,7 @@ class Sync{
     }
 
     async kickMember(member_id){
-        const response = await fetch(`/api/house/delete-member/${member_id}`,{
+        const response = await fetch(`/api/house/membership/${member_id}`,{
             method: "DELETE"
         });
         if(!response.ok){
@@ -93,7 +93,7 @@ class Sync{
     }
 
     async acceptRequest(user_id){
-        const response = await fetch("/api/house/accept-request", {
+        const response = await fetch("/api/house/membership", {
             method: "POST",
             body: JSON.stringify({user_id: user_id}),
             headers: {
@@ -106,7 +106,7 @@ class Sync{
     }
 
     async rejectRequest(user_id){
-        const response = await fetch(`/api/house/reject-request/${user_id}`, {
+        const response = await fetch(`/api/house/membership/request/${user_id}`, {
             method: "DELETE",
         });
         if(!response.ok){
@@ -115,7 +115,7 @@ class Sync{
     }
 
     async getMemberUnits(member_id){
-        const response = await fetch(`/api/house/member-units/${member_id}`);
+        const response = await fetch(`/api/house/member/${member_id}/units`);
 
         if(!response.ok){
             throw Error('Failed to get member units');
@@ -126,7 +126,7 @@ class Sync{
     }
 
     async getParticipation(){
-        const response = await fetch('/api/house/participation');
+        const response = await fetch('/api/house/war/participation');
         if(!response.ok){
             throw Error('Failed to get participations');
         }
@@ -136,7 +136,7 @@ class Sync{
     }
 
     async updateParticipation(decision){
-        const response = await fetch('/api/house/participation',{
+        const response = await fetch('/api/house/war/participation',{
             method: "POST",
             body: JSON.stringify({decision: decision}),
             headers: {

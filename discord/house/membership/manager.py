@@ -16,7 +16,7 @@ class MembershipManager(commands.Cog):
         """Send member request to house id"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            await Api.postSession('/house/request', {"house_id": house_id}, session)
+            await Api.postSession('/house/membership/request', {"house_id": house_id}, session)
             await ctx.send('Request sent');
         except ApiError as error:
             await ctx.send(error.message)
@@ -26,7 +26,7 @@ class MembershipManager(commands.Cog):
         """Cancel member request"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            await Api.deleteSession('/house/request', session)
+            await Api.deleteSession('/house/membership/request', session)
             await ctx.send('Request cancelled');
         except ApiError as error:
             await ctx.send(error.message)
@@ -36,7 +36,7 @@ class MembershipManager(commands.Cog):
         """All requests to house"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            data = await Api.getSession('/house/requests', session)
+            data = await Api.getSession('/house/membership/request/all', session)
             if(len(data) == 0):
                 await ctx.send('No requests')
             else:
@@ -63,7 +63,7 @@ class MembershipManager(commands.Cog):
         """Accept membership request"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            data = await Api.postSession('/house/accept-request',{"user_id": user_id} , session)
+            data = await Api.postSession('/house/membership',{"user_id": user_id} , session)
 
             await ctx.send('Membership accepted')
         except ApiError as error:
@@ -74,7 +74,7 @@ class MembershipManager(commands.Cog):
         """Refuse membership request"""
         try:
             session = await self.bot.getUserSession(ctx.message.author)
-            data = await Api.deleteSession('/house/reject-request/{0}'.format(user_id), session)
+            data = await Api.deleteSession('/house/membership/request/{0}'.format(user_id), session)
 
             await ctx.send('Membership rejected')
         except ApiError as error:
