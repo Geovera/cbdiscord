@@ -2,6 +2,27 @@ const db = require('../../../database/database');
 
 const model = {};
 
+const PART_OPTIONS = {
+    ALL:  '0',
+    YES:  '1',
+    NO:   '2',
+    IDK:  '3',
+    NULL: '4',
+};
+const TEMP_CONVERTER = {
+    '0': false,
+    '1': 'Yes',
+    '2': 'No',
+    '3': 'Idk',
+    '4': 'Null',
+}
+
+function hasHouse(context){
+    if(!context.user.house_id){
+        context.throw(400, 'No house');
+    }
+}
+
 // TO DELETE
 model.getCurrentWar = async() => {
     const sql_text = 'SELECT * FROM war_days WHERE completed = 0 LIMIT 1;'
@@ -27,16 +48,57 @@ model.warParticipation = async (user_id, house_id, decision) => {
     await con.release();
 }
 
-model.getParticipation = async (house_id) => {
-    const sql_text = `SELECT u.username, uw.decision
+async function getParticipation (house_id, option) {
+    let sql_text = `SELECT u.username, uw.decision
                       FROM users as u
                       LEFT JOIN users_war as uw ON uw.user_id = u.id
                       LEFT JOIN war_days as w ON w.id = uw.war_id
-                      WHERE uw.house_id = ? AND w.completed = 0 
-                      ORDER BY uw.last_updated ASC;`;
+                      WHERE uw.house_id = ? AND w.completed = 0`;
+
+    if(option){
+        sql_text += ` AND uw.decision = \"${option}\"`;
+    }
+    sql_text += ' ORDER BY uw.last_updated ASC;';
 
     const data = await db.pool.query(sql_text, [house_id]);
     return data;
+}
+
+async function getNullParticipation(house_id, war_id) {
+    const sql_text = `SELECT u.username
+                      FROM users as u
+                      WHERE u.house_id = ? AND u.id NOT IN(
+                          SELECT u.id
+                            FROM users_war as uw
+                            LEFT JOIN users as u ON uw.user_id = u.id
+                            WHERE u.house_id = ? AND uw.war_id = ?);`;
+
+    const data = await db.pool.query(sql_text, [house_id, house_id, war_id]);
+    return data;
+}
+
+model.getWarParticipation = async (context, option) => {
+    hasHouse(context);
+    try{
+        const war = await model.getCurrentWar();
+        if(!war){
+            throw Error('Failed to get Current War');
+        }
+        let participation = {};
+        switch(option){
+            case PART_OPTIONS.NULL:
+                participation = await getNullParticipation(context.user.house_id, war.id);
+                break;
+            default:
+                participation = await getParticipation(context.user.house_id, TEMP_CONVERTER[option]);
+                break;
+        }
+        context.response.status = 200;
+        context.response.body = {war: war, participation: participation};
+    }catch(error){
+        console.log(error);
+        context.throw('Failed to get Participation');
+    }
 }
 
 module.exports = model;

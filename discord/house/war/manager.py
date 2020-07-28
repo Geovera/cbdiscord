@@ -71,12 +71,27 @@ class WarManager(commands.Cog):
         except ApiError as error:
             await ctx.send(error.message)
 
+    @commands.command(aliases=["mancos"])
+    async def notParticipationMembers(self, ctx):
+        try:
+            session = await self.bot.getUserSession(ctx.message.author)
+            data = await Api.getSession('/house/war/participation/4', session)
+
+            date = parser.parse(data['war'].get('day'))
+            await ctx.send('War Date: {0}/{1}/{2}'.format(date.year, date.month, date.day))
+            members = data.get('participation')
+
+            embed = self.craftColumns(members, 3, 'Missing participation')
+
+            await ctx.send(embed=embed)
+        except ApiError as error:
+            await ctx.send(error.message)
+
     def craftColumns(self, data, numOfColumns, title):
         embed = discord.Embed()
-        embed.set_author(name=title)
 
         if(len(data) == 0):
-            embed.add_field(name='Members', value='None')
+            embed.add_field(name=title, value='None')
             return embed
 
         lens = len(data)//numOfColumns
@@ -102,7 +117,7 @@ class WarManager(commands.Cog):
         for row in table:
             out_str += (' | '.join('{0:{width}}'.format(x, width=y) for x, y in zip(row, max_lens))) + '\n'
         out_str += '```'
-        embed.add_field(name="Members", value=out_str)
+        embed.add_field(name=title, value=out_str)
         embed.set_footer(text=('Total: {0}'.format(len(data))))
 
         return embed
