@@ -53,7 +53,7 @@ async function getParticipation (house_id, option) {
                       FROM users as u
                       LEFT JOIN users_war as uw ON uw.user_id = u.id
                       LEFT JOIN war_days as w ON w.id = uw.war_id
-                      WHERE uw.house_id = ? AND w.completed = 0`;
+                      WHERE u.house_id = ? AND w.completed = 0`;
 
     if(option){
         sql_text += ` AND uw.decision = \"${option}\"`;
