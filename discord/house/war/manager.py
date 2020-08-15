@@ -87,6 +87,40 @@ class WarManager(commands.Cog):
         except ApiError as error:
             await ctx.send(error.message)
 
+    @commands.command(aliases=["mancosami"])
+    async def remindNotParticipatingMembers(self, ctx):
+        try:
+            session = await self.bot.getUserSession(ctx.message.author)
+            data = await Api.getSession('/house/war/participation/reminder', session)
+
+            date = parser.parse(data['war'].get('day'))
+            members = data.get('participation')
+
+            reminder_str = 'Please state your attendance for: {0}/{1}/{2}'.format(date.year, date.month, date.day)
+            for user in members:
+                discord_id, username = user.get('discord_id'), user.get('username')
+                name = self.getMention(ctx.message.guild, discord_id, username)
+                reminder_str += '\n{0}'.format(name)
+
+            await ctx.send(reminder_str)
+        except ApiError as error:
+            await ctx.send(error.message)
+
+    def getMention(self, guild, discord_id, username):
+        # user = self.bot.get_user(int(discord_id))
+        # user = discord.utils.get(self.bot.get_all_members(), int(discord_id))
+        try:
+            num_id = int(discord_id)
+            user = guild.get_member(num_id)
+
+            if user == None:
+                raise TypeError('No user Found')
+
+            return user.mention
+        except TypeError as e:
+            return username
+
+
     def craftColumns(self, data, numOfColumns, title):
         embed = discord.Embed()
 

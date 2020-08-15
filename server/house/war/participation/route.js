@@ -10,6 +10,10 @@ function hasHouse(context){
     }
 }
 
+router.get('/reminder', async (context, next) => {
+    await participationModel.getReminder(context);
+});
+
 router.get('/', async (context, next) => {
     await participationModel.getWarParticipation(context, 0);
 });
@@ -47,5 +51,6 @@ router.post('/', async (context, next) => {
         context.throw(400, 'Failed to Update Participation');
     }
 });
+
 
 module.exports = router;

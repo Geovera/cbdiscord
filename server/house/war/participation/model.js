@@ -17,6 +17,23 @@ const TEMP_CONVERTER = {
     '4': 'Null',
 }
 
+const HOUSE_ROLES = {
+    lg: 0,
+    sen: 1,
+    mar: 2,
+    nob: 3,
+    tre: 4,
+    kng: 5
+}
+function hasHouseNoThrow(context){
+    return context.user.house_id;
+}
+function checkPermissions(context, ROLE){
+    if(!hasHouseNoThrow(context) || ROLE < context.user.lk_permission_level){
+        context.throw(403, "No Permissions")
+    }
+}
+
 function hasHouse(context){
     if(!context.user.house_id){
         context.throw(400, 'No house');
@@ -49,7 +66,7 @@ model.warParticipation = async (user_id, house_id, decision) => {
 }
 
 async function getParticipation (house_id, option) {
-    let sql_text = `SELECT u.username, uw.decision
+    let sql_text = `SELECT u.username, uw.decision, u.discord_id
                       FROM users as u
                       LEFT JOIN users_war as uw ON uw.user_id = u.id
                       LEFT JOIN war_days as w ON w.id = uw.war_id
@@ -65,7 +82,7 @@ async function getParticipation (house_id, option) {
 }
 
 async function getNullParticipation(house_id, war_id) {
-    const sql_text = `SELECT u.username
+    const sql_text = `SELECT u.username, u.discord_id
                       FROM users as u
                       WHERE u.house_id = ? AND u.id NOT IN(
                           SELECT u.id
@@ -93,6 +110,25 @@ model.getWarParticipation = async (context, option) => {
                 participation = await getParticipation(context.user.house_id, TEMP_CONVERTER[option]);
                 break;
         }
+        context.response.status = 200;
+        context.response.body = {war: war, participation: participation};
+    }catch(error){
+        console.log(error);
+        context.throw('Failed to get Participation');
+    }
+}
+
+model.getReminder = async (context) => {
+    hasHouse(context);
+    checkPermissions(context, HOUSE_ROLES.mar);
+
+    try{
+        const war = await model.getCurrentWar();
+        if(!war){
+            throw Error('Failed to get Current War');
+        }
+        let participation = await getNullParticipation(context.user.house_id, war.id);
+
         context.response.status = 200;
         context.response.body = {war: war, participation: participation};
     }catch(error){
