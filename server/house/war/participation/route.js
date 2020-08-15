@@ -19,22 +19,7 @@ router.get('/', async (context, next) => {
 });
 
 router.get('/:option', async (context, next) => {
-    // console.log(context.params.option);
-    // context.response.status = 204;
     await participationModel.getWarParticipation(context, context.params.option);
-    // hasHouse(context);
-    // try{
-    //     const war = await participationModel.getCurrentWar();
-    //     if(!war){
-    //         throw Error('Failed to get Current War');
-    //     }
-    //     const participation = await participationModel.getParticipation(context.user.house_id);
-    //     context.response.status = 200;
-    //     context.response.body = {war: war, participation: participation};
-    // }catch(error){
-    //     console.log(error);
-    //     context.throw('Failed to get Participation');
-    // }
 });
 
 router.post('/', async (context, next) => {

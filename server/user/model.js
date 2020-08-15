@@ -29,7 +29,7 @@ userModel.getUser = async (context, next) => {
 };
 
 userModel.getUserFullFromId = async (id) => {
-    const sql_text = `SELECT u.id, u.discord_id, u.house_id, u.leadership, u.lk_house_role, r.lk_permission_level
+    const sql_text = `SELECT u.id, CAST(u.discord_id as CHAR(20)) as discord_id, u.house_id, u.leadership, u.lk_house_role, r.lk_permission_level
                       FROM users as u
                       LEFT JOIN house_role_lk as r ON r.lk_key = u.lk_house_role
                       WHERE u.id = ? LIMIT 1;`;

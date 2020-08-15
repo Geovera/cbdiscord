@@ -30,13 +30,13 @@ class UserManager(commands.Cog):
         Username is optional and the discord username is default. Password is random if not specified"""
 
         username = params.get('username')
-        user = ctx.message.author;
+        user = ctx.message.author
         if(username==None):
             username = user.name
         password = params.get('password')
         if(password==None):
             password = self.randomPassword(random.randint(8, 16))
-        req_body = {'discordId': ctx.message.author.id, 'username': username, 'password': password}
+        req_body = {'discordId': str(ctx.message.author.id), 'username': username, 'password': password}
         try:
             await Api.post('/user/discord-register', req_body)
             await user.send('Register succesful\nUsername: {0}\nPassword: {1}'.format(username, password))
@@ -69,7 +69,7 @@ class UserManager(commands.Cog):
             await Api.deleteSession('/user/unit/{0}'.format(data['id']), session)
             return await ctx.send('Unit Assignment Removed')
         except ApiError as error:
-            return await self.handleApiError(ctx, error);
+            return await self.handleApiError(ctx, error)
 
     @commands.command()
     async def modUnit(self, ctx, term:str, *, params:param_converter=param_converter.defaults()):
@@ -100,7 +100,7 @@ class UserManager(commands.Cog):
             await Api.putSession('/user/unit/{0}'.format(data['id']), body, session)
             return await ctx.send('Unit Modified Successfully')
         except ApiError as error:
-            return await self.handleApiError(ctx, error);
+            return await self.handleApiError(ctx, error)
 
     @commands.command()
     async def assignUnit(self, ctx, term:str, *, params:param_converter=param_converter.defaults()):
@@ -131,7 +131,7 @@ class UserManager(commands.Cog):
             await Api.postSession('/user/unit', body, session)
             return await ctx.send('Unit Assigned Successfully')
         except ApiError as error:
-            return await self.handleApiError(ctx, error);
+            return await self.handleApiError(ctx, error)
 
     @commands.command()
     async def myUnits(self, ctx):
@@ -150,7 +150,7 @@ class UserManager(commands.Cog):
         embed = discord.Embed(color=0x19212d)
         embed.set_author(name='TestBot')
 
-        units_str = '';
+        units_str = ''
         for i in range(minI, maxI):
             if i < len(data):
                 unit = data[i]

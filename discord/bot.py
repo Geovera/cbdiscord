@@ -40,7 +40,7 @@ class ConqBot(commands.Bot):
         if user.id in self.id_to_session:
             return self.id_to_session[user.id]
         new_session = Session()
-        await Api.postSession('/user/d-login', {"discordId": user.id}, new_session);
+        await Api.postSession('/user/d-login', {"discordId": str(user.id)}, new_session)
         self.id_to_session.set_key(user.id, new_session, COOKIE_LIFETIME)
         self.id_to_session[user.id] = new_session
 

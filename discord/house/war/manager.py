@@ -97,21 +97,20 @@ class WarManager(commands.Cog):
             members = data.get('participation')
 
             reminder_str = 'Please state your attendance for: {0}/{1}/{2}'.format(date.year, date.month, date.day)
+
             for user in members:
                 discord_id, username = user.get('discord_id'), user.get('username')
-                name = self.getMention(ctx.message.guild, discord_id, username)
+                name = self.getMention(discord_id, username)
                 reminder_str += '\n{0}'.format(name)
 
             await ctx.send(reminder_str)
         except ApiError as error:
             await ctx.send(error.message)
 
-    def getMention(self, guild, discord_id, username):
-        # user = self.bot.get_user(int(discord_id))
-        # user = discord.utils.get(self.bot.get_all_members(), int(discord_id))
+    def getMention(self, discord_id, username):
         try:
             num_id = int(discord_id)
-            user = guild.get_member(num_id)
+            user = self.bot.get_user(num_id)
 
             if user == None:
                 raise TypeError('No user Found')

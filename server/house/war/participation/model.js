@@ -66,7 +66,7 @@ model.warParticipation = async (user_id, house_id, decision) => {
 }
 
 async function getParticipation (house_id, option) {
-    let sql_text = `SELECT u.username, uw.decision, u.discord_id
+    let sql_text = `SELECT u.username, uw.decision, CAST(u.discord_id as CHAR(20)) as discord_id
                       FROM users as u
                       LEFT JOIN users_war as uw ON uw.user_id = u.id
                       LEFT JOIN war_days as w ON w.id = uw.war_id
@@ -82,7 +82,7 @@ async function getParticipation (house_id, option) {
 }
 
 async function getNullParticipation(house_id, war_id) {
-    const sql_text = `SELECT u.username, u.discord_id
+    const sql_text = `SELECT u.username, CAST(u.discord_id as CHAR(20)) as discord_id
                       FROM users as u
                       WHERE u.house_id = ? AND u.id NOT IN(
                           SELECT u.id

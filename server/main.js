@@ -28,12 +28,18 @@ async function main(){
     app.use(bodyParser());
     app.use(session(SESS_CONFIG, app));
 
+
     router.use('/api/unit', unitRouter.routes(), unitRouter.allowedMethods());
     router.use('/api/user', userRouter.routes(), userRouter.allowedMethods());
     router.use('/api/house', houseRouter.routes(), houseRouter.allowedMethods());
 
     authRouter.use('/api/user', userAuthRouter.routes(), userAuthRouter.allowedMethods());
     authRouter.use('/api/house', houseAuthRouter.routes(), houseAuthRouter.allowedMethods());
+
+    router.post('/api/puta', (context, next) => {
+        console.log(context.request.body)
+    });
+
 
     app.use(router.routes()).use(router.allowedMethods());
 

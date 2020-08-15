@@ -69,6 +69,7 @@ router.post('/register', async(context, next)=>{
 
 router.post('/discord-register', async(context, next) =>{
     const body = context.request.body;
+    console.log(body)
     if(!body || !body.discordId){
         context.throw(422, 'No Discord Id')
     }
