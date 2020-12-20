@@ -119,6 +119,7 @@ class WarManager(commands.Cog):
     def getMention(self, discord_id, username):
         try:
             num_id = int(discord_id)
+            print(num_id)
             user = self.bot.get_user(num_id)
 
             if user == None:
@@ -126,6 +127,7 @@ class WarManager(commands.Cog):
 
             return user.mention
         except TypeError as e:
+            print(e)
             return username
 
 
