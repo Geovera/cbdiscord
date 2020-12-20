@@ -118,18 +118,11 @@ class WarManager(commands.Cog):
 
     def getMention(self, discord_id, username):
         try:
-            num_id = int(discord_id)
-            print(num_id)
-            user = self.bot.get_user(num_id)
-
-            if user == None:
-                raise TypeError('No user Found')
-
-            return user.mention
+            int(discord_id)
+            return '<@{0}>'.format(discord_id)
         except TypeError as e:
             print(e)
             return username
-
 
     def craftColumns(self, data, numOfColumns, title):
         embed = discord.Embed()
