@@ -36,11 +36,6 @@ async function main(){
     authRouter.use('/api/user', userAuthRouter.routes(), userAuthRouter.allowedMethods());
     authRouter.use('/api/house', houseAuthRouter.routes(), houseAuthRouter.allowedMethods());
 
-    router.post('/api/puta', (context, next) => {
-        console.log(context.request.body)
-    });
-
-
     app.use(router.routes()).use(router.allowedMethods());
 
     // Make sure user is authorized

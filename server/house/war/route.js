@@ -22,6 +22,25 @@ router.get('/', async (context, next) => {
     }
 });
 
+authRouter.post('/:date', async (context, next) => {
+    try{
+        // Check app owner id
+        if(context.user.id != 32){
+            throw('No user permissions');
+        }
+        const date = context.params.date;
+        let parsed_date = new Date(date);
+        if(isNaN(parsed_date)){
+            throw('Invalid date');
+        }
+        await warModel.insertWarDate(date, parsed_date);
+        context.response.status = 204;
+    }catch(error){
+        console.log(error);
+        context.throw(400, 'Failed to post new war')
+    }
+});
+
 async function insertNewWar(){
     try{
         await warModel.insertNewWar();

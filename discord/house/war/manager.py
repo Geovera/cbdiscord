@@ -71,6 +71,15 @@ class WarManager(commands.Cog):
         except ApiError as error:
             await ctx.send(error.message)
 
+    @commands.command(aliases=['nuevaGuerra', 'nueva'])
+    async def createNewWar(self, ctx, date_str:str):
+        try:
+            session = await self.bot.getUserSession(ctx.message.author)
+            await Api.postSession('/house/war/{0}'.format(date_str), {}, session)
+            await ctx.send('War added at {0}'.format(date_str))
+        except ApiError as error:
+            await ctx.send(error.message)
+
     @commands.command(aliases=["mancos"])
     async def notParticipationMembers(self, ctx):
         try:
